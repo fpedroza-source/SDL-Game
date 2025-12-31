@@ -2,12 +2,13 @@ animation: idle
 length: 8
 frame: 0
  col: 0
- row: 0
+ row: 1
  duration: 10
  flip: 0
- angle: 0.0
  nextframe: -1
  nextstate: -1 
+ incx: 0;
+ incy: 0;
 frame: 1
  col: 1
 frame: 2
@@ -27,12 +28,13 @@ animation: run
 length: 14
 frame: 0
  col: 0
- row: 1
+ row: 2
  duration: 2
- flip: 0
- angle: 0.0
+ flip: 0 
  nextframe: -1
  nextstate: -1
+ incx: 3
+ incy: 0
 frame: 1
  col: 1  
 frame: 2
@@ -64,12 +66,12 @@ animation: uptoduck
 length: 2
 frame: 0
  col: 0
- row: 4
- flip: 0
- angle: 0.0
+ row: 3
+ flip: 0 
  duration: 2
  nextframe: -1
  nextstate: -1
+ incx: 0
 frame: 1
  col: 1
  nextframe: 1
@@ -78,40 +80,50 @@ animation: ducktoup
 length: 1
 frame: 0
  col: 0
- row: 4
- flip: 0
- angle: 0.0
+ row: 3
+ flip: 0 
  duration: 2
  nextframe: -1
  nextstate: 0
+ incx: 0
 animation: roll
-length: 8
+length: 9
 frame: 0
- col: 1
+ col: 0
  row: 3
- flip: 0
- angle: 0.0
- duration: 20
+ flip: 0 
+ duration: 2
  nextframe: -1
  nextstate: -1
+ incx: 4
 frame: 1
- col: 3
-frame: 2
- row: 2
- col: 3
- angle: 75.0
+ row: 0
+ col: 0
+frame: 2 
+ col: 1 
 frame: 3
-  col: 4
-  angle: 90.0
+  col: 2  
 frame: 4
- col: 4
- angle: 135.0
+ col: 3 
 frame: 5
- col: 3
-frame: 6
  col: 4
+frame: 6
+ col: 5
 frame: 7
  row: 3
- col: 6
+ col: 1
+frame: 8
+ col: 0
  nextstate: 0
+end;
+animation: turning
+length: 1
+frame: 0
+ col: 0
+ row: 4
+ flip: 0 
+ duration: 2
+ nextframe: -1
+ nextstate: 0
+ incx: 0
 end;

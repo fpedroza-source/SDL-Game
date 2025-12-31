@@ -1,0 +1,1 @@
+d:\SteamLibrary\steamapps\common\Blender\blender -b char2.blend -a

@@ -11,14 +11,24 @@ SDL_FRect GetSpriteRect(Animation* anim)
     return rect;
 }
 
-bool Animate(Animation* anim, int *cur_state)
+bool Animate(Animations* animations)
 {
-    
+    if (HandleKeyPress(animations))
+    {
+        animations->collection[animations->current].frame_index = 0;
+        animations->collection[animations->current].frame_time = 0;
+    }
+    Animation* anim = &animations->collection[animations->current];
+
+    animations->posx += anim->frames[anim->frame_index].incx;
+
     if (anim->frame_time >= anim->frames[anim->frame_index].duration) {
         int next_frame = anim->frames[anim->frame_index].next_frame;
         int next_state = anim->frames[anim->frame_index].next_state;
         if (next_state >= 0) {
-            *cur_state = next_state;
+            animations->current = next_state;
+            animations->collection[next_state].frame_index = 0;
+            animations->collection[next_state].frame_time = 0;
             return true;
         }
         if (next_frame>=0) {
@@ -29,33 +39,30 @@ bool Animate(Animation* anim, int *cur_state)
         }
         anim->frame_time = -1;        
     }
-    anim->frame_time++;
+    anim->frame_time++;    
     return false;
 };
 
 bool LoadAnimations(Animations *animations, const char* filename)
 {
-    int length = 0;
-    int total = 0;
+    size_t length = 0;    
     int index = -1;
     int col = 0;
     int row = 0;
     int duration = 0;
-    int flip = 0;
-    double angle = 0;
+    int flip = 0;    
     int next_frame = -1;
     int next_state = -1;
-    int frame_index = 0;
+    size_t frame_index = 0;
+    int incx = 0;
+    int incy = 0;
     char text[80];
 
     FILE *file = fopen(filename, "r");
         
     if (file == NULL) return false;
 
-     for (int i =0; i < MAX_ANIMATION; i++) {                
-       animations->collection[i].frame_time = 0;
-       animations->collection[i].frame_index = 0;
-     }
+    SDL_memset(animations, 0, sizeof(animations));
 
     while (fscanf(file, "%s", text) != EOF) {
     
@@ -77,52 +84,66 @@ bool LoadAnimations(Animations *animations, const char* filename)
             fscanf(file, "%d", &next_frame);  
         } else if (strcmp(text, "nextstate:") == 0) {
             fscanf(file, "%d", &next_state);  
-        } else if (strcmp(text, "angle:") == 0) {
-            fscanf(file, "%lf", &angle);
+        } else if (strcmp(text,"incx:") == 0) {
+            fscanf(file, "%d", &incx);  
         }
         if (index >=0) {
             animations->collection[index].frames[frame_index].col = col;
             animations->collection[index].frames[frame_index].row = row;
             animations->collection[index].frames[frame_index].duration = duration;
-            animations->collection[index].frames[frame_index].flip = flip;
-            animations->collection[index].frames[frame_index].angle = angle;
+            animations->collection[index].frames[frame_index].flip = flip;            
             animations->collection[index].frames[frame_index].next_frame = next_frame;
             animations->collection[index].frames[frame_index].next_state = next_state;
+            animations->collection[index].frames[frame_index].incx = incx;
         }       
     }
     fclose(file);
     return true;   
 }
 
-bool HandleKeyPress(Animation* current, int* state) {
+bool HandleKeyPress(Animations* animations) {
     const bool* keys = NULL;
     keys = SDL_GetKeyboardState(NULL);
     if (keys !=NULL)
     {
-        switch (*state)
+        switch (animations->current)
         {
         case STATE_IDLE:
             /* code */
             if (keys[SDL_SCANCODE_DOWN]) {
-                *state = STATE_UPTODUCK;
+                animations->current = STATE_UPTODUCK;
                 return true;
-            } else if (keys[SDL_SCANCODE_RIGHT]) {
-                *state = STATE_RUN;
+            } 
+            if (keys[SDL_SCANCODE_RIGHT]) {
+                animations->current = STATE_RUN;
                 return true;
-            } else if (keys[SDL_SCANCODE_SPACE]) {
-                *state = STATE_ROLL;
+            } 
+            if (keys[SDL_SCANCODE_SPACE]) {
+                animations->current = STATE_ROLL;
                 return true;
             }
             break;
         case STATE_RUN:
-            if (!keys[SDL_SCANCODE_RIGHT]) {
-                *state = STATE_IDLE;
+            if (keys[SDL_SCANCODE_SPACE]) {
+                animations->current = STATE_ROLL;
                 return true;
-                }                             
+            }
+            if (!keys[SDL_SCANCODE_RIGHT]) {
+                animations->current = STATE_IDLE;
+                return true;
+            }                             
+            if (keys[SDL_SCANCODE_DOWN]) {
+                animations->current = STATE_UPTODUCK;
+                return true;
+            } 
             break;
         case STATE_UPTODUCK:
+            if (keys[SDL_SCANCODE_SPACE]) {
+                animations->current = STATE_ROLL;
+                return true;
+            }
             if (!keys[SDL_SCANCODE_DOWN]) {
-                *state = STATE_DUCKTOUP;
+                animations->current = STATE_DUCKTOUP;
                 return true;
                 }                             
             break;

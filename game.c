@@ -8,8 +8,7 @@ Animations Hero_animation;
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
-Animation* CurAnimation = NULL;
-int current_state = STATE_IDLE;
+
 SDL_Texture *sprite_texture = NULL;
 
 /* This function runs once at startup. */
@@ -38,7 +37,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     if (sprite_texture == NULL) return SDL_APP_FAILURE;
 
     if (!LoadAnimations(&Hero_animation, "data/Hero_animations.yaml")) return SDL_APP_FAILURE;
-    CurAnimation = &Hero_animation.collection[STATE_IDLE];
+    Hero_animation.posx = 0;
+    Hero_animation.posy = 128;
+    Hero_animation.facing = false;
+    Hero_animation.current = STATE_IDLE;
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -53,15 +55,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
             return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
         
         case SDL_EVENT_KEY_DOWN:
-            if (event->key.key == SDLK_ESCAPE) return SDL_APP_SUCCESS;
-        case SDL_EVENT_KEY_UP:
-            if (HandleKeyPress(CurAnimation, &current_state)) {
-                CurAnimation = &Hero_animation.collection[current_state];
-                CurAnimation->frame_index = 0;
-                CurAnimation->frame_time = 0;
-            }
-                       
-            break;
+            if (event->key.key == SDLK_ESCAPE) return SDL_APP_SUCCESS;            
                    
     }
     
@@ -71,18 +65,14 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
-    SDL_FRect dstrect = {0,0,SPRITE_SIZE, SPRITE_SIZE};
-    
     char debug[80];
+  
+    Animate(&Hero_animation);
     
-    if (Animate(CurAnimation, &current_state))
-    {
-        CurAnimation = &Hero_animation.collection[current_state];
-        CurAnimation->frame_index = 0;
-        CurAnimation->frame_time = 0;
-    };
+    
+    Animation *current = &Hero_animation.collection[Hero_animation.current];
 
-    SDL_FRect srcrect = GetSpriteRect(CurAnimation);
+    SDL_FRect srcrect = GetSpriteRect(current);
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 255, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
 
@@ -90,15 +80,16 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);  /* white, full alpha */
-    sprintf(debug, "frame:%d", CurAnimation->frame_index);
+    sprintf(debug, "frame:%d", current->frame_index);
     
     SDL_RenderDebugText(renderer, 0, 0, debug);
   
-    int flip = CurAnimation->frames[CurAnimation->frame_index].flip;
-    double angle = CurAnimation->frames[CurAnimation->frame_index].angle;
+    int flip = current->frames[current->frame_index].flip;
 
+    SDL_FRect dstrect = {Hero_animation.posx, Hero_animation.posy,SPRITE_SIZE, SPRITE_SIZE};
+   
     SDL_RenderTextureRotated(renderer, sprite_texture, &srcrect, 
-    &dstrect, angle, NULL, flip);
+    &dstrect, 0.0, NULL, flip);
 
    
     SDL_RenderPresent(renderer);

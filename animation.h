@@ -15,26 +15,30 @@ typedef struct {
     int col;
     int duration;
     int flip;
-    double angle;
     int next_frame;
     int next_state;
+    int incx;
+    int incy;
 } Frame;
 
 typedef struct {
     Frame frames[MAX_FRAMES];
-    int length;   
+    size_t length;   
     int frame_time;
-    uint64_t frame_index;
+    size_t frame_index;
     /* data */
 } Animation;
 
 typedef struct {
-    Animation collection[MAX_ANIMATION];
-    int total;
+    int posx;
+    int posy;
+    bool facing;
+    size_t current;    
+    Animation collection[MAX_ANIMATION];    
 } Animations;
 
 
 SDL_FRect GetSpriteRect(Animation* anim);
-bool Animate(Animation *anim, int *state);
-bool HandleKeyPress(Animation* current, int* state); 
+bool Animate(Animations* animations);
+bool HandleKeyPress(Animations* animatinos); 
 bool LoadAnimations(Animations *animations, const char* filename);
