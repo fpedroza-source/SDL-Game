@@ -42,6 +42,7 @@ bool LoadAnimations(Animations *animations, const char* filename)
     int row = 0;
     int duration = 0;
     int flip = 0;
+    double angle = 0;
     int next_frame = -1;
     int next_state = -1;
     int frame_index = 0;
@@ -51,32 +52,17 @@ bool LoadAnimations(Animations *animations, const char* filename)
         
     if (file == NULL) return false;
 
-    animations->collection = NULL;
+     for (int i =0; i < MAX_ANIMATION; i++) {                
+       animations->collection[i].frame_time = 0;
+       animations->collection[i].frame_index = 0;
+     }
 
     while (fscanf(file, "%s", text) != EOF) {
     
-        if (strcmp(text, "total:") == 0) {
-            fscanf(file, "%d", &total);
-            animations->total = total;
-            animations->collection = (Animation *)SDL_malloc(total*sizeof(Animation));
-            if (animations->collection == NULL) {
-                fclose(file);
-                return false;                
-            }                                    
-            for (int i =0; i < total; i++) {
-                animations->collection[i].frames = NULL;                
-                animations->collection[i].frame_time = 0;
-                animations->collection[i].frame_index = 0;
-            }
-        } else if (strcmp(text, "length:") == 0) {
+        if (strcmp(text, "length:") == 0) {
             index++;
             fscanf(file, "%d", &length);
-            animations->collection[index].length = length;
-            animations->collection[index].frames = (Frame *)SDL_malloc(length*sizeof(Frame));
-            if (animations->collection[index].frames == NULL) {
-                fclose(file);
-                return false;
-            }                        
+            animations->collection[index].length = length;                                          
         } else if (strcmp(text, "frame:") == 0) {
             fscanf(file, "%d", &frame_index);            
         } else if (strcmp(text, "col:") == 0) {
@@ -91,20 +77,19 @@ bool LoadAnimations(Animations *animations, const char* filename)
             fscanf(file, "%d", &next_frame);  
         } else if (strcmp(text, "nextstate:") == 0) {
             fscanf(file, "%d", &next_state);  
+        } else if (strcmp(text, "angle:") == 0) {
+            fscanf(file, "%lf", &angle);
         }
-        if ((animations->collection != NULL) && 
-            (animations->collection[index].frames != NULL)){
+        if (index >=0) {
             animations->collection[index].frames[frame_index].col = col;
             animations->collection[index].frames[frame_index].row = row;
             animations->collection[index].frames[frame_index].duration = duration;
             animations->collection[index].frames[frame_index].flip = flip;
+            animations->collection[index].frames[frame_index].angle = angle;
             animations->collection[index].frames[frame_index].next_frame = next_frame;
             animations->collection[index].frames[frame_index].next_state = next_state;
-        }
-        //if (index >= total) break;
+        }       
     }
-
-  
     fclose(file);
     return true;   
 }
@@ -124,7 +109,10 @@ bool HandleKeyPress(Animation* current, int* state) {
             } else if (keys[SDL_SCANCODE_RIGHT]) {
                 *state = STATE_RUN;
                 return true;
-                } 
+            } else if (keys[SDL_SCANCODE_SPACE]) {
+                *state = STATE_ROLL;
+                return true;
+            }
             break;
         case STATE_RUN:
             if (!keys[SDL_SCANCODE_RIGHT]) {

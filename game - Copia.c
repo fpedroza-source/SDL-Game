@@ -111,5 +111,12 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
     /* SDL will clean up the window/renderer for us. */
     if (sprite_texture != NULL) SDL_DestroyTexture(sprite_texture);
-
-} 
+    if (Hero_animation.collection !=NULL) {
+        for (int i=0; i < Hero_animation.total; i++) {
+            Frame *frames = Hero_animation.collection[i].frames;        
+            if (frames != NULL) SDL_free(frames);        
+        }
+        SDL_free(Hero_animation.collection);
+    }
+    
+}
