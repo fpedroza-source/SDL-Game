@@ -1,0 +1,1 @@
+gcc game.c animation.c -I d:\msys64\ucrt64\include\SDL3 -L d:\msys64\ucrt64\lib -lSDL3 -O3 -o game

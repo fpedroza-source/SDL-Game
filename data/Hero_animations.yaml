@@ -1,0 +1,84 @@
+total: 4
+animation: idle
+length: 8
+frame: 0
+ col: 0
+ row: 0
+ duration: 10
+ flip: 0
+ nextframe: -1
+ nextstate: -1
+frame: 1
+ col: 1
+frame: 2
+ col: 2  
+frame: 3
+ col: 3  
+frame: 4
+ col: 4
+frame: 5
+ col: 3
+frame: 6
+ col: 2  
+frame: 7
+ col: 1
+end;
+animation: run
+length: 14
+frame: 0
+ col: 0
+ row: 1
+ duration: 2
+ flip: 0
+ nextframe: -1
+ nextstate: -1
+frame: 1
+ col: 1  
+frame: 2
+ col: 2  
+frame: 3
+ col: 3
+frame: 4
+ col: 4  
+frame: 5
+ col: 5  
+frame: 6
+ col: 6 
+frame: 7
+ col: 7  
+frame: 8
+ col: 8  
+frame: 9
+ col: 9
+frame: 10
+ col: 10
+frame: 11
+ col: 11
+frame: 12
+ col: 12
+frame: 13
+ col: 13 
+end;
+animation: uptoduck
+length: 2
+frame: 0
+ col: 0
+ row: 4
+ flip: 0
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+frame: 1
+ col: 1
+ nextframe: 1
+end;
+animation: ducktoup
+length: 2
+frame: 1
+ col: 0
+ row: 4
+ flip: 0
+ duration: 2
+ nextframe: -1
+ nextstate: 0
+end;

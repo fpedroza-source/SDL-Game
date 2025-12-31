@@ -1,23 +1,36 @@
 #include "animation.h"
-SDL_FRect GetSpriteRect(int col, int row, int width, int height)
+
+SDL_FRect GetSpriteRect(Animation* anim)
 {
-    int x = col * width;
-    int y = row * height;
-    SDL_FRect dst_rect = {x, y, width, height};
-    return dst_rect;
+    int col = anim->frames[anim->frame_index].col;
+    int row = anim->frames[anim->frame_index].row;
+
+    int x = col * SPRITE_SIZE;
+    int y = row * SPRITE_SIZE;
+    SDL_FRect rect = {x, y, SPRITE_SIZE, SPRITE_SIZE};
+    return rect;
 }
 
-SDL_FRect Animate(Animation* anim)
+bool Animate(Animation* anim, int *cur_state)
 {
-    if (anim->frame_time == anim->frames[anim->frame_index].duration) {
-        anim->frame_index++;
-        if (anim->frame_index >= anim->length) anim->frame_index = 0;
-        anim->frame_time = -1;
+    
+    if (anim->frame_time >= anim->frames[anim->frame_index].duration) {
+        int next_frame = anim->frames[anim->frame_index].next_frame;
+        int next_state = anim->frames[anim->frame_index].next_state;
+        if (next_state >= 0) {
+            *cur_state = next_state;
+            return true;
+        }
+        if (next_frame>=0) {
+            anim->frame_index = next_frame;
+         } else {
+            anim->frame_index++;
+            if (anim->frame_index >= anim->length) anim->frame_index = 0;
+        }
+        anim->frame_time = -1;        
     }
     anim->frame_time++;
-    return GetSpriteRect(anim->frames[anim->frame_index].col,
-        anim->frames[anim->frame_index].row, 
-        SPRITE_SIZE, SPRITE_SIZE);
+    return false;
 };
 
 bool LoadAnimations(Animations *animations, const char* filename)
@@ -28,11 +41,14 @@ bool LoadAnimations(Animations *animations, const char* filename)
     int col = 0;
     int row = 0;
     int duration = 0;
+    int flip = 0;
+    int next_frame = -1;
+    int next_state = -1;
     int frame_index = 0;
-    FILE *file = fopen(filename, "r");
     char text[80];
-    
-    
+
+    FILE *file = fopen(filename, "r");
+        
     if (file == NULL) return false;
 
     animations->collection = NULL;
@@ -44,44 +60,90 @@ bool LoadAnimations(Animations *animations, const char* filename)
             animations->total = total;
             animations->collection = (Animation *)SDL_malloc(total*sizeof(Animation));
             if (animations->collection == NULL) {
-                return false;
                 fclose(file);
+                return false;                
             }                                    
-        }
-        if (strcmp(text, "length:") == 0) {
+            for (int i =0; i < total; i++) {
+                animations->collection[i].frames = NULL;                
+                animations->collection[i].frame_time = 0;
+                animations->collection[i].frame_index = 0;
+            }
+        } else if (strcmp(text, "length:") == 0) {
             index++;
             fscanf(file, "%d", &length);
-            animations->collection[index].frames = NULL;
             animations->collection[index].length = length;
-            animations->collection[index].frame_time = 0;
-            animations->collection[index].frame_index = 0;
             animations->collection[index].frames = (Frame *)SDL_malloc(length*sizeof(Frame));
             if (animations->collection[index].frames == NULL) {
                 fclose(file);
                 return false;
             }                        
-        }
-        if (strcmp(text, "frame:") == 0) {
+        } else if (strcmp(text, "frame:") == 0) {
             fscanf(file, "%d", &frame_index);            
-        }
-        if (strcmp(text, "col:") == 0) {
+        } else if (strcmp(text, "col:") == 0) {
             fscanf(file, "%d", &col);            
-        }
-        if (strcmp(text, "row:") == 0) {
+        } else if (strcmp(text, "row:") == 0) {
             fscanf(file, "%d", &row);            
-        }
-        if (strcmp(text, "duration:") == 0) {
+        } else if (strcmp(text, "duration:") == 0) {
             fscanf(file, "%d", &duration);            
+        } else if (strcmp(text, "flip:") == 0) {
+            fscanf(file, "%d", &flip);  
+        } else if (strcmp(text, "nextframe:") == 0) {
+            fscanf(file, "%d", &next_frame);  
+        } else if (strcmp(text, "nextstate:") == 0) {
+            fscanf(file, "%d", &next_state);  
         }
         if ((animations->collection != NULL) && 
             (animations->collection[index].frames != NULL)){
             animations->collection[index].frames[frame_index].col = col;
             animations->collection[index].frames[frame_index].row = row;
             animations->collection[index].frames[frame_index].duration = duration;
+            animations->collection[index].frames[frame_index].flip = flip;
+            animations->collection[index].frames[frame_index].next_frame = next_frame;
+            animations->collection[index].frames[frame_index].next_state = next_state;
         }
+        //if (index >= total) break;
     }
 
   
     fclose(file);
     return true;   
+}
+
+bool HandleKeyPress(Animation* current, int* state) {
+    const bool* keys = NULL;
+    keys = SDL_GetKeyboardState(NULL);
+    if (keys !=NULL)
+    {
+        switch (*state)
+        {
+        case STATE_IDLE:
+            /* code */
+            if (keys[SDL_SCANCODE_DOWN]) {
+                *state = STATE_UPTODUCK;
+                return true;
+            } else if (keys[SDL_SCANCODE_RIGHT]) {
+                *state = STATE_RUN;
+                return true;
+                } 
+            break;
+        case STATE_RUN:
+            if (!keys[SDL_SCANCODE_RIGHT]) {
+                *state = STATE_IDLE;
+                return true;
+                }                             
+            break;
+        case STATE_UPTODUCK:
+            if (!keys[SDL_SCANCODE_DOWN]) {
+                *state = STATE_DUCKTOUP;
+                return true;
+                }                             
+            break;
+        
+        default:
+            break;
+        }
+    }
+    return false;
+
+
 }

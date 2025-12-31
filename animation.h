@@ -1,17 +1,20 @@
 #pragma once
 #define SPRITE_SIZE 128
-#include <SDL3/SDL.h>
-#include <stdio.h>
-
 #define STATE_IDLE 0
 #define STATE_RUN 1
-
+#define STATE_UPTODUCK 2
+#define STATE_DUCKTOUP 3
+#include <SDL3/SDL.h>
+#include <stdio.h>
 
 typedef struct 
 {
     int row;
     int col;
     int duration;
+    int flip;
+    int next_frame;
+    int next_state;
 } Frame;
 
 typedef struct 
@@ -30,6 +33,7 @@ typedef struct Animations
 } Animations;
 
 
-SDL_FRect GetSpriteRect(int col, int row, int width, int height);
-SDL_FRect Animate(Animation *anim);
+SDL_FRect GetSpriteRect(Animation* anim);
+bool Animate(Animation *anim, int *state);
+bool HandleKeyPress(Animation* current, int* state); 
 bool LoadAnimations(Animations *animations, const char* filename);
