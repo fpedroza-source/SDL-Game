@@ -37,8 +37,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     if (sprite_texture == NULL) return SDL_APP_FAILURE;
 
     if (!LoadAnimations(&Hero_animation, "data/Hero_animations.yaml")) return SDL_APP_FAILURE;
-    Hero_animation.posx = 0;
-    Hero_animation.posy = 128;
+    Hero_animation.pos.x = 0;
+    Hero_animation.pos.y = 128;
     Hero_animation.facing = false;
     Hero_animation.current = STATE_IDLE;
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -80,16 +80,25 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);  /* white, full alpha */
+    SDL_FRect box = current->frames[current->frame_index].box;
+    box.x += Hero_animation.pos.x;
+    box.y += Hero_animation.pos.y;
+    /*if (!Hero_animation.facing)
+    {
+        box.x -=/
+    }*/
+    SDL_RenderRect(renderer, &box);
+
     sprintf(debug, "frame:%d", current->frame_index);
     
     SDL_RenderDebugText(renderer, 0, 0, debug);
   
-    int flip = current->frames[current->frame_index].flip;
+    //int flip = current->frames[current->frame_index].flip;
 
-    SDL_FRect dstrect = {Hero_animation.posx, Hero_animation.posy,SPRITE_SIZE, SPRITE_SIZE};
+    SDL_FRect dstrect = {Hero_animation.pos.x - SPRITE_SIZE/2, Hero_animation.pos.y,SPRITE_SIZE, SPRITE_SIZE};
    
     SDL_RenderTextureRotated(renderer, sprite_texture, &srcrect, 
-    &dstrect, 0.0, NULL, flip);
+    &dstrect, 0.0, &Hero_animation.pos, Hero_animation.facing);
 
    
     SDL_RenderPresent(renderer);

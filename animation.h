@@ -7,6 +7,9 @@
 #define STATE_UPTODUCK 2
 #define STATE_DUCKTOUP 3
 #define STATE_ROLL 4
+#define STATE_TURN 5
+#define STATE_ATTACK1 6
+
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
@@ -14,11 +17,12 @@ typedef struct {
     int row;
     int col;
     int duration;
-    int flip;
+  //  int flip;
     int next_frame;
     int next_state;
     int incx;
     int incy;
+    SDL_FRect box;
 } Frame;
 
 typedef struct {
@@ -30,8 +34,7 @@ typedef struct {
 } Animation;
 
 typedef struct {
-    int posx;
-    int posy;
+    SDL_FPoint pos;
     bool facing;
     size_t current;    
     Animation collection[MAX_ANIMATION];    

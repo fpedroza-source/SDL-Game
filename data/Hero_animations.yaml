@@ -4,11 +4,13 @@ frame: 0
  col: 0
  row: 1
  duration: 10
- flip: 0
  nextframe: -1
  nextstate: -1 
- incx: 0;
- incy: 0;
+ incx: 0; 
+ boxx: -16;
+ boxy: 40;
+ boxw: 24;
+ boxh: 72;
 frame: 1
  col: 1
 frame: 2
@@ -30,11 +32,9 @@ frame: 0
  col: 0
  row: 2
  duration: 2
- flip: 0 
  nextframe: -1
  nextstate: -1
- incx: 3
- incy: 0
+ incx: 3 
 frame: 1
  col: 1  
 frame: 2
@@ -67,11 +67,14 @@ length: 2
 frame: 0
  col: 0
  row: 3
- flip: 0 
  duration: 2
  nextframe: -1
  nextstate: -1
  incx: 0
+ boxx: 58;
+ boxy: 64;
+ boxw: 28;
+ boxh: 50;
 frame: 1
  col: 1
  nextframe: 1
@@ -81,7 +84,6 @@ length: 1
 frame: 0
  col: 0
  row: 3
- flip: 0 
  duration: 2
  nextframe: -1
  nextstate: 0
@@ -91,10 +93,13 @@ length: 9
 frame: 0
  col: 0
  row: 3
- flip: 0 
  duration: 2
  nextframe: -1
  nextstate: -1
+ boxx: 0;
+ boxy: 0;
+ boxw: 0;
+ boxh: 0;
  incx: 4
 frame: 1
  row: 0
@@ -121,9 +126,37 @@ length: 1
 frame: 0
  col: 0
  row: 4
- flip: 0 
  duration: 2
  nextframe: -1
  nextstate: 0
  incx: 0
+end;
+animation: attack1
+length: 7
+frame: 0
+ col: 0
+ row: 5
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+ incx: 0
+ boxx: 54;
+ boxy: 40;
+ boxw: 28;
+ boxh: 72;
+frame: 1
+ col: 1
+frame: 2
+ col: 2
+frame: 3
+ duration: 1
+ col: 3
+frame: 4
+ col: 4
+frame: 5
+ col: 5
+frame: 6
+ duration: 2
+ col: 0
+ nextstate: 0
 end;
