@@ -2,15 +2,15 @@ animation: idle
 length: 8
 frame: 0
  col: 0
- row: 1
+ row: 0
  duration: 10
  nextframe: -1
  nextstate: -1 
  incx: 0; 
- boxx: -16;
- boxy: 40;
+ boxx: -12;
+ boxy: 60;
  boxw: 24;
- boxh: 72;
+ boxh: 68;
 frame: 1
  col: 1
 frame: 2
@@ -30,7 +30,7 @@ animation: run
 length: 14
 frame: 0
  col: 0
- row: 2
+ row: 1
  duration: 2
  nextframe: -1
  nextstate: -1
@@ -66,14 +66,14 @@ animation: uptoduck
 length: 2
 frame: 0
  col: 0
- row: 3
+ row: 2
  duration: 2
  nextframe: -1
  nextstate: -1
  incx: 0
- boxx: 58;
- boxy: 64;
- boxw: 28;
+ boxx: -2;
+ boxy: 78;
+ boxw: 24;
  boxh: 50;
 frame: 1
  col: 1
@@ -83,7 +83,7 @@ animation: ducktoup
 length: 1
 frame: 0
  col: 0
- row: 3
+ row: 2
  duration: 2
  nextframe: -1
  nextstate: 0
@@ -92,7 +92,7 @@ animation: roll
 length: 9
 frame: 0
  col: 0
- row: 3
+ row: 2
  duration: 2
  nextframe: -1
  nextstate: -1
@@ -102,7 +102,7 @@ frame: 0
  boxh: 0;
  incx: 4
 frame: 1
- row: 0
+ row: 4
  col: 0
 frame: 2 
  col: 1 
@@ -115,7 +115,11 @@ frame: 5
 frame: 6
  col: 5
 frame: 7
- row: 3
+boxx: -2;
+ boxy: 78;
+ boxw: 24;
+ boxh: 50;
+ row: 2
  col: 1
 frame: 8
  col: 0
@@ -125,7 +129,11 @@ animation: turning
 length: 1
 frame: 0
  col: 0
- row: 4
+ row: 3
+ boxx: -12;
+ boxy: 60;
+ boxw: 24;
+ boxh: 68;
  duration: 2
  nextframe: -1
  nextstate: 0
@@ -140,23 +148,17 @@ frame: 0
  nextframe: -1
  nextstate: -1
  incx: 0
- boxx: 54;
- boxy: 40;
- boxw: 28;
- boxh: 72;
+ boxx: -12;
+ boxy: 60;
+ boxw: 24;
+ boxh: 68;
 frame: 1
  col: 1
 frame: 2
  col: 2
 frame: 3
- duration: 1
  col: 3
 frame: 4
  col: 4
-frame: 5
- col: 5
-frame: 6
- duration: 2
- col: 0
  nextstate: 0
 end;
