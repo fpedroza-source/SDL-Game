@@ -155,10 +155,12 @@ frame: 0
 frame: 1
  col: 1
 frame: 2
+ duration: 3
  col: 2
 frame: 3
+ duration: 2
  col: 3
-frame: 4
+frame: 4 
  col: 4
  nextstate: 0
 end;
