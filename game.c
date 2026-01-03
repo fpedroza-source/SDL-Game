@@ -29,9 +29,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     }
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_W, WINDOW_H, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     SDL_SetRenderVSync(renderer, 1);
-    sprite_sheet = SDL_LoadBMP("data/hero.bmp");
+    sprite_sheet = SDL_LoadPNG("data/hero.png");
     if (sprite_sheet == NULL) return SDL_APP_FAILURE;
-    SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
+    //SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
     sprite_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
     SDL_DestroySurface(sprite_sheet);
     if (sprite_texture == NULL) return SDL_APP_FAILURE;
@@ -74,7 +74,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 
     SDL_FRect srcrect = GetSpriteRect(current);
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 255, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
 
     /* clear the window to the draw color. */
     SDL_RenderClear(renderer);
@@ -95,7 +95,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
   
     //int flip = current->frames[current->frame_index].flip;
 
-    SDL_FRect dstrect = {Hero_animation.pos.x - SPRITE_SIZE/2, Hero_animation.pos.y,SPRITE_SIZE, SPRITE_SIZE};
+    SDL_FRect dstrect = {Hero_animation.pos.x - SPRITE_SIZE_W/2, Hero_animation.pos.y,SPRITE_SIZE_W, SPRITE_SIZE_H};
    
     SDL_RenderTextureRotated(renderer, sprite_texture, &srcrect, 
     &dstrect, 0.0, &Hero_animation.pos, Hero_animation.facing);

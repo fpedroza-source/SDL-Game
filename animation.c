@@ -5,9 +5,9 @@ SDL_FRect GetSpriteRect(Animation* anim)
     int col = anim->frames[anim->frame_index].col;
     int row = anim->frames[anim->frame_index].row;
 
-    int x = col * SPRITE_SIZE;
-    int y = row * SPRITE_SIZE;
-    SDL_FRect rect = {x, y, SPRITE_SIZE, SPRITE_SIZE};
+    int x = col * SPRITE_SIZE_W;
+    int y = row * SPRITE_SIZE_H;
+    SDL_FRect rect = {x, y, SPRITE_SIZE_W, SPRITE_SIZE_H};
     return rect;
 }
 

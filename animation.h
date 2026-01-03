@@ -1,7 +1,8 @@
 #pragma once
 #define MAX_ANIMATION 16
 #define MAX_FRAMES 16
-#define SPRITE_SIZE 128
+#define SPRITE_SIZE_W 128
+#define SPRITE_SIZE_H 96
 #define STATE_IDLE 0
 #define STATE_RUN 1
 #define STATE_UPTODUCK 2
