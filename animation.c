@@ -1,16 +1,5 @@
 #include "animation.h"
 
-SDL_FRect GetSpriteRect(Animation* anim)
-{
-    int col = anim->frames[anim->frame_index].col;
-    int row = anim->frames[anim->frame_index].row;
-
-    int x = col * SPRITE_SIZE_W;
-    int y = row * SPRITE_SIZE_H;
-    SDL_FRect rect = {x, y, SPRITE_SIZE_W, SPRITE_SIZE_H};
-    return rect;
-}
-
 bool Animate(Animations* animations)
 {
     if (HandleKeyPress(animations))
@@ -48,9 +37,7 @@ bool Animate(Animations* animations)
 bool LoadAnimations(Animations *animations, const char* filename)
 {
     size_t length = 0;    
-    int index = -1;
-    int col = 0;
-    int row = 0;
+    int index = -1;   
     int duration = 0;
     int flip = 0;    
     int next_frame = -1;
@@ -68,16 +55,14 @@ bool LoadAnimations(Animations *animations, const char* filename)
 
     while (fscanf(file, "%s", text) != EOF) {
     
-        if (strcmp(text, "length:") == 0) {
+        if (strcmp(text, "filename:") == 0) {
+            fscanf (file, "%s", animations->filename);
+        } else if (strcmp(text, "length:") == 0) {
             index++;
             fscanf(file, "%d", &length);
             animations->collection[index].length = length;                                          
         } else if (strcmp(text, "frame:") == 0) {
             fscanf(file, "%d", &frame_index);            
-        } else if (strcmp(text, "col:") == 0) {
-            fscanf(file, "%d", &col);            
-        } else if (strcmp(text, "row:") == 0) {
-            fscanf(file, "%d", &row);            
         } else if (strcmp(text, "duration:") == 0) {
             fscanf(file, "%d", &duration);            
         /*/} else if (strcmp(text, "flip:") == 0) {
@@ -98,8 +83,6 @@ bool LoadAnimations(Animations *animations, const char* filename)
             fscanf(file,"%d", &boxh);
         } 
         if (index >=0) {
-            animations->collection[index].frames[frame_index].col = col;
-            animations->collection[index].frames[frame_index].row = row;
             animations->collection[index].frames[frame_index].duration = duration;
           //  animations->collection[index].frames[frame_index].flip = flip;            
             animations->collection[index].frames[frame_index].next_frame = next_frame;

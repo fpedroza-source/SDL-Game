@@ -1,22 +1,18 @@
 #pragma once
 #define MAX_ANIMATION 16
 #define MAX_FRAMES 16
-#define SPRITE_SIZE_W 128
-#define SPRITE_SIZE_H 96
 #define STATE_IDLE 0
 #define STATE_RUN 1
 #define STATE_UPTODUCK 2
 #define STATE_DUCKTOUP 3
-#define STATE_ROLL 4
-#define STATE_TURN 5
+#define STATE_TURN 4
+#define STATE_ROLL 5
 #define STATE_ATTACK1 6
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
 typedef struct {
-    int row;
-    int col;
     int duration;
   //  int flip;
     int next_frame;
@@ -24,6 +20,7 @@ typedef struct {
     int incx;
     int incy;
     SDL_FRect box;
+    SDL_FRect colbox;
 } Frame;
 
 typedef struct {
@@ -38,11 +35,11 @@ typedef struct {
     SDL_FPoint pos;
     bool facing;
     size_t current;    
+    char filename[80];
     Animation collection[MAX_ANIMATION];    
 } Animations;
 
 
-SDL_FRect GetSpriteRect(Animation* anim);
 bool Animate(Animations* animations);
 bool HandleKeyPress(Animations* animatinos); 
 bool LoadAnimations(Animations *animations, const char* filename);

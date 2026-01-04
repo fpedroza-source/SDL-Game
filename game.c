@@ -1,7 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL_main.h>
 #include "animation.h"
-Animations Hero_animation;
+Animations Hero_animation, Map;
 #define WINDOW_W 960
 #define WINDOW_H 540
 
@@ -10,6 +10,7 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
 SDL_Texture *sprite_texture = NULL;
+SDL_Texture *map_texture = NULL;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
@@ -29,14 +30,25 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     }
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_W, WINDOW_H, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     SDL_SetRenderVSync(renderer, 1);
-    sprite_sheet = SDL_LoadPNG("data/hero.png");
+    
+    if (!LoadAnimations(&Hero_animation, "data/Hero_animations.yaml")) return SDL_APP_FAILURE;
+    if (!LoadAnimations(&Map, "data/maps/HauntedForest/tiles.yaml")) return SDL_APP_FAILURE;
+    sprite_sheet = SDL_LoadPNG(Hero_animation.filename);
     if (sprite_sheet == NULL) return SDL_APP_FAILURE;
     //SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
     sprite_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
     SDL_DestroySurface(sprite_sheet);
+    sprite_sheet = NULL;
     if (sprite_texture == NULL) return SDL_APP_FAILURE;
 
-    if (!LoadAnimations(&Hero_animation, "data/Hero_animations.yaml")) return SDL_APP_FAILURE;
+    sprite_sheet = SDL_LoadPNG(Map.filename);
+    if (sprite_sheet == NULL) return SDL_APP_FAILURE;
+    //SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
+    map_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
+    SDL_DestroySurface(sprite_sheet);
+    sprite_sheet = NULL;
+    if (map_texture == NULL) return SDL_APP_FAILURE;
+
     Hero_animation.pos.x = 0;
     Hero_animation.pos.y = 128;
     Hero_animation.facing = false;
@@ -72,8 +84,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     
     Animation *current = &Hero_animation.collection[Hero_animation.current];
 
-    SDL_FRect srcrect = GetSpriteRect(current);
-
+  
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
 
     /* clear the window to the draw color. */
@@ -81,8 +92,8 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);  /* white, full alpha */
     SDL_FRect box = current->frames[current->frame_index].box;
-    box.x += Hero_animation.pos.x;
-    box.y += Hero_animation.pos.y;
+    //box.x += Hero_animation.pos.x;
+    //box.y += Hero_animation.pos.y;
     /*if (!Hero_animation.facing)
     {
         box.x -=/
@@ -95,10 +106,22 @@ SDL_AppResult SDL_AppIterate(void *appstate)
   
     //int flip = current->frames[current->frame_index].flip;
 
-    SDL_FRect dstrect = {Hero_animation.pos.x - SPRITE_SIZE_W/2, Hero_animation.pos.y,SPRITE_SIZE_W, SPRITE_SIZE_H};
+    SDL_FRect dstrect = {Hero_animation.pos.x - box.w/2, Hero_animation.pos.y, box.w, box.h};
    
-    SDL_RenderTextureRotated(renderer, sprite_texture, &srcrect, 
+    SDL_RenderTextureRotated(renderer, sprite_texture, &box, 
     &dstrect, 0.0, &Hero_animation.pos, Hero_animation.facing);
+
+    SDL_FRect dstrect1 = {0,128, 32, 32}; 
+
+    SDL_RenderTexture(renderer, map_texture, &Map.collection[0].frames[0].box, &dstrect1);
+
+    SDL_FRect dstrect2 = {0,160, 32, 32}; 
+
+    SDL_RenderTexture(renderer, map_texture, &Map.collection[0].frames[1].box, &dstrect2);
+
+    SDL_FRect dstrect3 = {0,192, 32, 32}; 
+
+    SDL_RenderTexture(renderer, map_texture, &Map.collection[0].frames[2].box, &dstrect3);
 
    
     SDL_RenderPresent(renderer);

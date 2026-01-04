@@ -1,166 +1,148 @@
+filename: data/Hero.png
 animation: idle
 length: 8
 frame: 0
- col: 0
- row: 0
  duration: 10
  nextframe: -1
  nextstate: -1 
  incx: 0; 
- boxx: -12;
- boxy: 60;
- boxw: 24;
- boxh: 68;
-frame: 1
- col: 1
-frame: 2
- col: 2  
-frame: 3
- col: 3  
-frame: 4
- col: 4
+ boxx: 0;
+ boxy: 0;
+ boxw: 128;
+ boxh: 96;
+frame: 1 
+ boxx: 128
+frame: 2 
+ boxx: 256
+frame: 3  
+ boxx: 384
+frame: 4 
+ boxx: 512
 frame: 5
- col: 3
-frame: 6
- col: 2  
+ boxx: 384
+frame: 6 
+ boxx: 256
 frame: 7
- col: 1
+ boxx: 128 
 end;
 animation: run
 length: 14
 frame: 0
- col: 0
- row: 1
  duration: 2
  nextframe: -1
  nextstate: -1
  incx: 3 
+ boxx: 0
+ boxy: 96 
 frame: 1
- col: 1  
+ boxx: 128 
 frame: 2
- col: 2  
+ boxx: 256 
 frame: 3
- col: 3
+ boxx: 384 
 frame: 4
- col: 4  
+ boxx: 512 
 frame: 5
- col: 5  
+ boxx: 640 
 frame: 6
- col: 6 
+ boxx: 768 
 frame: 7
- col: 7  
+ boxx: 896 
 frame: 8
- col: 8  
+ boxx: 1024 
 frame: 9
- col: 9
+ boxx: 1152  
 frame: 10
- col: 10
+ boxx: 1280 
 frame: 11
- col: 11
+ boxx: 1408 
 frame: 12
- col: 12
+ boxx: 1536 
 frame: 13
- col: 13 
+ boxx: 1664 
 end;
 animation: uptoduck
 length: 2
 frame: 0
- col: 0
- row: 2
  duration: 2
  nextframe: -1
  nextstate: -1
  incx: 0
- boxx: -2;
- boxy: 78;
- boxw: 24;
- boxh: 50;
+ boxx: 0;
+ boxy: 192; 
 frame: 1
- col: 1
+ boxx: 128
  nextframe: 1
 end;
 animation: ducktoup
 length: 1
-frame: 0
- col: 0
- row: 2
+frame: 0 
  duration: 2
  nextframe: -1
  nextstate: 0
  incx: 0
-animation: roll
-length: 9
-frame: 0
- col: 0
- row: 2
- duration: 2
- nextframe: -1
- nextstate: -1
- boxx: 0;
- boxy: 0;
- boxw: 0;
- boxh: 0;
- incx: 4
-frame: 1
- row: 4
- col: 0
-frame: 2 
- col: 1 
-frame: 3
-  col: 2  
-frame: 4
- col: 3 
-frame: 5
- col: 4
-frame: 6
- col: 5
-frame: 7
-boxx: -2;
- boxy: 78;
- boxw: 24;
- boxh: 50;
- row: 2
- col: 1
-frame: 8
- col: 0
- nextstate: 0
+ boxx: 0 
 end;
 animation: turning
 length: 1
 frame: 0
- col: 0
- row: 3
- boxx: -12;
- boxy: 60;
- boxw: 24;
- boxh: 68;
+ boxx: 0;
+ boxy: 288;
  duration: 2
  nextframe: -1
  nextstate: 0
  incx: 0
 end;
+animation: roll
+length: 9
+frame: 0
+ incx: 0
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+ boxx: 0;
+ boxy: 192; 
+frame: 1
+ boxy: 384
+frame: 2 
+ incx: 5
+ boxx: 128 
+frame: 3
+ boxx:256   
+frame: 4
+ boxx: 384 
+frame: 5
+ boxx: 512
+frame: 6
+ boxx: 640
+frame: 7
+boxx: -2;
+ incx: 0
+ boxy: 192;
+ boxx: 128; 
+frame: 8
+ boxx: 0
+ nextstate: 0
+end;
+
 animation: attack1
 length: 7
 frame: 0
- col: 0
- row: 5
  duration: 2
  nextframe: -1
  nextstate: -1
  incx: 0
- boxx: -12;
- boxy: 60;
- boxw: 24;
- boxh: 68;
+ boxx: 0;
+ boxy: 480;
 frame: 1
- col: 1
+ boxx: 128
 frame: 2
  duration: 3
- col: 2
+ boxx: 256
 frame: 3
  duration: 2
- col: 3
+ boxx: 384
 frame: 4 
- col: 4
+ boxx: 512
  nextstate: 0
 end;

@@ -1,0 +1,29 @@
+filename: data/maps/HauntedForest/spritesheet.png
+length: 8
+frame: 0
+ boxx: 32;
+ boxy: 112;
+ boxw: 32;
+ boxh: 32;
+frame: 1
+ boxx: 32;
+ boxy: 144;
+ boxw: 32;
+ boxh: 32;
+frame: 2
+ col: 2
+ boxx: 32;
+ boxy: 176;
+ boxw: 32;
+ boxh: 32;
+frame: 3
+ col: 3  
+frame: 4
+ col: 4
+frame: 5
+ col: 3
+frame: 6
+ col: 2  
+frame: 7
+ col: 1
+end;
