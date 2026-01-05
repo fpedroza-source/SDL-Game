@@ -1,29 +1,140 @@
 filename: data/maps/HauntedForest/spritesheet.png
-length: 8
+animation: tiles
+length: 9
 frame: 0
  boxx: 32;
- boxy: 112;
- boxw: 32;
- boxh: 32;
-frame: 1
- boxx: 32;
- boxy: 144;
- boxw: 32;
- boxh: 32;
-frame: 2
- col: 2
- boxx: 32;
+ boxy: 112; 
+ boxw: 32
+ boxh: 32
+ colboxx: 0
+ colboxy: 16
+ colboxw: 32
+ colboxh: 16
+frame: 1 
+ boxy: 144 
+ colboxx: 0
+ colboxy: 0
+ colboxw: 32
+ colboxh: 32
+frame: 2  
  boxy: 176;
- boxw: 32;
- boxh: 32;
 frame: 3
- col: 3  
+ boxx: 0
+ boxy: 144
 frame: 4
- col: 4
-frame: 5
- col: 3
-frame: 6
- col: 2  
+ boxy: 208
+ boxw: 192
+ boxh: 192
+frame: 5 
+ boxx: 208
+ boxy: 208
+ boxw: 224
+ boxh: 160
+frame: 6 
+ boxx: 512
+ boxy: 0
+ boxw: 352
+ boxh: 238
 frame: 7
- col: 1
+ boxx: 512
+ boxy: 238
+ boxw: 352
+ boxh: 238
+frame: 8
+ boxx: 512
+ boxy: 238
+ boxw: 352
+ boxh: 238
+end;
+animation: map1
+length: 7
+frame: 0
+ nextframe: 6
+ nextstate: 3
+ boxx: 0
+ boxy: 0
+ incx: 352
+frame: 1
+ nextframe: 7
+ nextstate: 3
+ boxx: 0
+ boxy: 0
+ incx: 352
+frame: 2
+ nextframe: 4
+ nextstate: 1
+ boxx: 128
+ boxy: 82
+ incx: 0
+frame: 3
+ nextframe: 5
+ nextstate: 1
+ boxx: 512
+ boxy: 112
+ incx: 0
+end;
+frame: 4
+ nextframe: 0
+ nextstate: 25
+ boxx: 0
+ boxy: 256
+ incx: 32
+frame: 5
+ nextframe: 1
+ nextstate: 25
+ boxx: 0
+ boxy: 288 
+frame: 6
+ nextframe: 2
+ nextstate: 25
+ boxx: 0
+ boxy: 320 
+end;
+animation: map2
+length: 7
+frame: 0
+ nextframe: 6
+ nextstate: 3
+ boxx: 0
+ boxy: 0
+ incx: 352
+frame: 1
+ nextframe: 7
+ nextstate: 3
+ boxx: 0
+ boxy: 0
+ incx: 352
+frame: 2
+ nextframe: 4
+ nextstate: 1
+ boxx: 324
+ boxy: 82
+ incx: 0
+frame: 3
+ nextframe: 0
+ nextstate: 25
+ boxx: 0
+ boxy: 256
+ incx: 32
+frame: 4
+ nextframe: 1
+ nextstate: 25
+ boxx: 0
+ boxy: 288 
+frame: 5
+ nextframe: 2
+ nextstate: 25
+ boxx: 0
+ boxy: 320 
+end;
+frame: 6
+ nextframe: 1
+ nextstate: 4
+ boxx: 320
+ boxy: 256 
+ incx: 0
+ incy: -32
+end;
+animation: end
+length: 0
 end;

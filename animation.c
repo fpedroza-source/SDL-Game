@@ -1,4 +1,5 @@
 #include "animation.h"
+#define READATRRIBUTE(a, v) if (strcmp(text, a) == 0) {fscanf(file, "%d", &v);}
 
 bool Animate(Animations* animations)
 {
@@ -12,6 +13,7 @@ bool Animate(Animations* animations)
     int incx = anim->frames[anim->frame_index].incx;
     incx -= (animations->facing*incx)*2;
     animations->pos.x += incx;
+    if (animations->pos.x < 0) animations->pos.x = 0;
 
     if (anim->frame_time >= anim->frames[anim->frame_index].duration) {
         int next_frame = anim->frames[anim->frame_index].next_frame;
@@ -39,19 +41,20 @@ bool LoadAnimations(Animations *animations, const char* filename)
     size_t length = 0;    
     int index = -1;   
     int duration = 0;
-    int flip = 0;    
     int next_frame = -1;
     int next_state = -1;
-    size_t frame_index = 0;
+    int frame_index = 0;
     int incx = 0;
-    int boxx=0,boxy=0,boxw=0,boxh=0;
+    int incy = 0;
+    int boxx = 0,boxy = 0,boxw = 0,boxh = 0;
+    int colboxx = 0, colboxy = 0, colboxw = 0, colboxh = 0;
     char text[80];
 
     FILE *file = fopen(filename, "r");
         
     if (file == NULL) return false;
 
-    SDL_memset(animations, 0, sizeof(animations));
+    SDL_memset(animations, 0, sizeof(*animations));
 
     while (fscanf(file, "%s", text) != EOF) {
     
@@ -59,39 +62,37 @@ bool LoadAnimations(Animations *animations, const char* filename)
             fscanf (file, "%s", animations->filename);
         } else if (strcmp(text, "length:") == 0) {
             index++;
-            fscanf(file, "%d", &length);
+            fscanf(file, "%llu", &length);
             animations->collection[index].length = length;                                          
-        } else if (strcmp(text, "frame:") == 0) {
-            fscanf(file, "%d", &frame_index);            
-        } else if (strcmp(text, "duration:") == 0) {
-            fscanf(file, "%d", &duration);            
-        /*/} else if (strcmp(text, "flip:") == 0) {
-            fscanf(file, "%d", &flip);*/
-        } else if (strcmp(text, "nextframe:") == 0) {
-            fscanf(file, "%d", &next_frame);  
-        } else if (strcmp(text, "nextstate:") == 0) {
-            fscanf(file, "%d", &next_state);  
-        } else if (strcmp(text,"incx:") == 0) {
-            fscanf(file, "%d", &incx);  
-        } else if (strcmp(text, "boxx:") == 0) {
-            fscanf(file,"%d", &boxx);
-        } else if (strcmp(text, "boxy:") == 0) {
-            fscanf(file,"%d", &boxy);
-        } else if (strcmp(text, "boxw:") == 0) {
-            fscanf(file,"%d", &boxw);
-        } else if (strcmp(text, "boxh:") == 0) {
-            fscanf(file,"%d", &boxh);
-        } 
+        } else READATRRIBUTE("frame:", frame_index)       
+        else READATRRIBUTE("duration:", duration)    
+        else READATRRIBUTE("nextframe:", next_frame)  
+        else READATRRIBUTE("nextstate:", next_state)  
+        else READATRRIBUTE("incx:", incx)
+        else READATRRIBUTE("incy:", incy) 
+        else READATRRIBUTE("boxx:", boxx)
+        else READATRRIBUTE("boxy:", boxy)
+        else READATRRIBUTE("boxw:", boxw)
+        else READATRRIBUTE("boxh:", boxh) 
+        else READATRRIBUTE("colboxx:", colboxx)
+        else READATRRIBUTE("colboxy:", colboxy)
+        else READATRRIBUTE("colboxw:", colboxw)
+        else READATRRIBUTE("colboxh:", colboxh)
         if (index >=0) {
             animations->collection[index].frames[frame_index].duration = duration;
           //  animations->collection[index].frames[frame_index].flip = flip;            
             animations->collection[index].frames[frame_index].next_frame = next_frame;
             animations->collection[index].frames[frame_index].next_state = next_state;
             animations->collection[index].frames[frame_index].incx = incx;
+            animations->collection[index].frames[frame_index].incy = incy;
             animations->collection[index].frames[frame_index].box.x = boxx;
             animations->collection[index].frames[frame_index].box.y = boxy;
             animations->collection[index].frames[frame_index].box.w = boxw;
             animations->collection[index].frames[frame_index].box.h = boxh;
+            animations->collection[index].frames[frame_index].colbox.x = colboxx;
+            animations->collection[index].frames[frame_index].colbox.y = colboxy;
+            animations->collection[index].frames[frame_index].colbox.w = colboxw;
+            animations->collection[index].frames[frame_index].colbox.h = colboxh;            
         }       
     }
     fclose(file);
@@ -150,7 +151,7 @@ bool HandleKeyPress(Animations* animations) {
                return true;     
             }
             if (((!animations->facing) && (!keys[SDL_SCANCODE_RIGHT])) || 
-               ((animations->facing)) && (!keys[SDL_SCANCODE_LEFT])) {
+               ((animations->facing) && (!keys[SDL_SCANCODE_LEFT]))) {
                     animations->current = STATE_IDLE;
                     return true;
                 }                             
@@ -177,6 +178,22 @@ bool HandleKeyPress(Animations* animations) {
         }
     }
     return false;
+}
 
 
+bool IntersectRect(const SDL_FRect* r1, const SDL_FRect* r2, SDL_FRect* r3)
+{
+    return false;
+   /* bool overlap = !(r2->left > r1->right
+        || r2->right < r1->left
+        || r2->top > r1->bottom
+        || r2->bottom < r1->top
+        );
+    if (r3 != NULL) {
+        r3->left = r1->left > r2->left ? r1->left : r2->left;
+        r3->right = r1->right > r2->right ? r2->right : r1->right;
+        r3->top = r1->top > r2->top ? r1->top : r2->top;
+        r3->bottom = r1->bottom > r2->bottom ? r2->bottom : r1->bottom;
+    }
+    return overlap;*/
 }

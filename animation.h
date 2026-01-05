@@ -27,7 +27,7 @@ typedef struct {
     Frame frames[MAX_FRAMES];
     size_t length;   
     int frame_time;
-    size_t frame_index;
+    int frame_index;
     /* data */
 } Animation;
 
@@ -43,3 +43,4 @@ typedef struct {
 bool Animate(Animations* animations);
 bool HandleKeyPress(Animations* animatinos); 
 bool LoadAnimations(Animations *animations, const char* filename);
+bool IntersectRect(const SDL_FRect* r1, const SDL_FRect* r2, SDL_FRect* r3);

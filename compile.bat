@@ -1,1 +1,1 @@
-gcc game.c animation.c -I d:\msys64\ucrt64\include\SDL3 -L d:\msys64\ucrt64\lib -lSDL3 -O3 -o game
+gcc -Wall game.c animation.c map.c -o game.exe -O2 -I "D:\\Projetos\\SDL3\\include" -L "D:\\Projetos\\SDL3\\lib" -lSDL3

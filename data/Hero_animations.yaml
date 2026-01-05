@@ -10,6 +10,10 @@ frame: 0
  boxy: 0;
  boxw: 128;
  boxh: 96;
+ colboxx: 48
+ colboxy: 24
+ colboxw: 24
+ colboxh: 72
 frame: 1 
  boxx: 128
 frame: 2 
@@ -116,7 +120,6 @@ frame: 5
 frame: 6
  boxx: 640
 frame: 7
-boxx: -2;
  incx: 0
  boxy: 192;
  boxx: 128; 
