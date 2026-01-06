@@ -1,0 +1,117 @@
+filename: data/maps/Cemetery/tileset_spritesheet.png
+animation: MAP 01********************************************
+length: 16
+frame: 0
+ nextstate: 2
+ posxy: 0 128
+ incxy: 704 0
+ colbox: 0 0 0 0
+ box: 0 416 352 128 
+frame: 1
+ nextstate: 1
+ box: 352 224 352 320
+ posxy: 352 -64
+ incxy: 0 0
+frame: 4
+ nextstate: 13
+ colbox: 0 256 64 32 
+ posxy: 0 256
+ box: 0 32 64 32 
+ incxy: 64 0
+frame: 5
+ nextstate: 25
+ posxy: 0 288
+ incxy: 32 0
+ colbox: 0 0 0 0
+ box: 24 256 32 32
+frame: 6
+ nextstate: 3
+ incxy: 288 0
+ posxy: 64 224
+ box: 96 32 32 64 
+frame: 7
+ nextstate: 3 
+ posxy: 64 96
+ box: 96 0 32 32
+frame: 8
+ nextstate: 3 
+ posxy: 64 128
+ box: 128 0 32 32 
+frame: 9
+ nextstate: 3 
+ posxy: 64 160
+ box: 128 0 32 32 
+frame: 10
+ nextstate: 3 
+ posxy: 64 192
+ box: 128 0 32 32 
+frame: 11
+ nextstate: 1 
+ posxy: 256 192
+ box: 128 32 96 64 
+frame: 12
+ nextstate: 1 
+ posxy: 512 192
+ box: 160 32 96 64 
+frame: 13 
+ nextstate: 1 
+ posxy: 448 160
+ box: 416 0 64 96 
+frame: 14
+ nextstate: 1 
+ posxy: 96 128
+ box: 160 128 160 128 
+frame: 15
+ nextstate: 13
+ box: 0 0 64 32
+ posxy: 0 224 
+ incxy: 64 0
+end;
+animation: MAP 02********************************************
+length: 16
+frame: 4
+ nextstate: 13
+ colbox: 0 256 64 32 
+ posxy: 0 256
+ box: 0 32 64 32 
+ incxy: 64 0
+frame: 5
+ nextstate: 25
+ posxy: 0 288
+ incxy: 32 0
+ colbox: 0 0 0 0
+ box: 24 256 32 32
+frame: 6
+ nextstate: 1
+ incxy: 0 0
+ posxy: 320 224
+ colbox: 344 224 128 32
+ box: 0 256 160 32
+frame: 7
+ nextstate: 5
+ incxy: 0 -24
+ posxy: 344 200
+ colbox: 344 200 24 24
+ box: 16 264 24 24
+frame: 10
+ nextstate: 1
+ incxy: 0 0
+ posxy: 64 224
+ colbox: 0 0 0 0
+ box: 96 32 32 64 
+frame: 11
+ nextstate: 3 
+ incxy: 0 -32
+ posxy: 64 192
+ box: 128 0 32 32
+frame: 12
+ nextstate: 1 
+ incxy: 0 0
+ posxy: 64 96
+ box: 96 0 32 32
+frame: 15
+ nextstate: 13
+ box: 0 0 64 32
+ posxy: 0 224 
+ incxy: 64 0
+end;

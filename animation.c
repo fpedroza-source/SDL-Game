@@ -1,5 +1,5 @@
 #include "animation.h"
-#define READATRRIBUTE(a, v) if (strcmp(text, a) == 0) {fscanf(file, "%d", &v);}
+#define READATRRIBUTE(a, format, ...) if (strcmp(text, a) == 0) {fscanf(file, format, __VA_ARGS__);}
 
 bool Animate(Animations* animations)
 {
@@ -10,8 +10,8 @@ bool Animate(Animations* animations)
     }
     Animation* anim = &animations->collection[animations->current];
 
-    int incx = anim->frames[anim->frame_index].incx;
-    int incy = anim->frames[anim->frame_index].incy;
+    int incx = anim->frames[anim->frame_index].incxy.x;
+    int incy = anim->frames[anim->frame_index].incxy.y;
     incx -= (animations->facing*incx)*2;
     animations->pos.x += incx;
     animations->pos.y += incy;
@@ -46,10 +46,10 @@ bool LoadAnimations(Animations *animations, const char* filename)
     int next_frame = -1;
     int next_state = -1;
     int frame_index = 0;
-    int incx = 0;
-    int incy = 0;
-    int boxx = 0,boxy = 0,boxw = 0,boxh = 0;
-    int colboxx = 0, colboxy = 0, colboxw = 0, colboxh = 0;
+    SDL_FPoint incxy = {0};
+    SDL_FRect box = {0};
+    SDL_FRect col = {0};
+    SDL_FPoint posxy = {0};     
     char text[80];
 
     FILE *file = fopen(filename, "r");
@@ -66,35 +66,23 @@ bool LoadAnimations(Animations *animations, const char* filename)
             index++;
             fscanf(file, "%llu", &length);
             animations->collection[index].length = length;                                          
-        } else READATRRIBUTE("frame:", frame_index)       
-        else READATRRIBUTE("duration:", duration)    
-        else READATRRIBUTE("nextframe:", next_frame)  
-        else READATRRIBUTE("nextstate:", next_state)  
-        else READATRRIBUTE("incx:", incx)
-        else READATRRIBUTE("incy:", incy) 
-        else READATRRIBUTE("boxx:", boxx)
-        else READATRRIBUTE("boxy:", boxy)
-        else READATRRIBUTE("boxw:", boxw)
-        else READATRRIBUTE("boxh:", boxh) 
-        else READATRRIBUTE("colboxx:", colboxx)
-        else READATRRIBUTE("colboxy:", colboxy)
-        else READATRRIBUTE("colboxw:", colboxw)
-        else READATRRIBUTE("colboxh:", colboxh)
+        } else READATRRIBUTE("frame:", "%d", &frame_index)       
+        else READATRRIBUTE("duration:", "%d", &duration)    
+        else READATRRIBUTE("nextframe:", "%d", &next_frame)  
+        else READATRRIBUTE("nextstate:", "%d", &next_state)  
+        else READATRRIBUTE("incxy:", "%f %f", &incxy.x, &incxy.y)        
+        else READATRRIBUTE("box:", "%f %f %f %f", &box.x, &box.y, &box.w, &box.h)
+        else READATRRIBUTE("colbox:", "%f %f %f %f", &col.x, &col.y, &col.w, &col.h)
+        else READATRRIBUTE("posxy:", "%f %f", &posxy.x, &posxy.y)        
         if (index >=0) {
             animations->collection[index].frames[frame_index].duration = duration;
           //  animations->collection[index].frames[frame_index].flip = flip;            
             animations->collection[index].frames[frame_index].next_frame = next_frame;
             animations->collection[index].frames[frame_index].next_state = next_state;
-            animations->collection[index].frames[frame_index].incx = incx;
-            animations->collection[index].frames[frame_index].incy = incy;
-            animations->collection[index].frames[frame_index].box.x = boxx;
-            animations->collection[index].frames[frame_index].box.y = boxy;
-            animations->collection[index].frames[frame_index].box.w = boxw;
-            animations->collection[index].frames[frame_index].box.h = boxh;
-            animations->collection[index].frames[frame_index].colbox.x = colboxx;
-            animations->collection[index].frames[frame_index].colbox.y = colboxy;
-            animations->collection[index].frames[frame_index].colbox.w = colboxw;
-            animations->collection[index].frames[frame_index].colbox.h = colboxh;            
+            animations->collection[index].frames[frame_index].incxy = incxy;
+            animations->collection[index].frames[frame_index].box = box;
+            animations->collection[index].frames[frame_index].colbox = col;
+            animations->collection[index].frames[frame_index].posxy = posxy;            
         }       
     }
     fclose(file);

@@ -19,21 +19,21 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
     SDL_Surface *sprite_sheet = NULL;
 
-    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
+    //SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", 1280, 720, SDL_WINDOW_FULLSCREEN, &window, &renderer)) {
+    if (!SDL_CreateWindowAndRenderer("Game", 1280, 720, SDL_WINDOW_FULLSCREEN, &window, &renderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     
     
-    if (!LoadAnimations(&Hero_animation, "data/Hero_animations.yaml")) return SDL_APP_FAILURE;
-    if (!LoadAnimations(&Map, "data/maps/HauntedForest/tiles.yaml")) return SDL_APP_FAILURE;
+    if (!LoadAnimations(&Hero_animation, "data/chars/hero/Hero_animations.yaml")) return SDL_APP_FAILURE;
+    if (!LoadAnimations(&Map, "data/maps/Cemetery/map_tiles.yaml")) return SDL_APP_FAILURE;
    
     sprite_sheet = SDL_LoadPNG(Hero_animation.filename);
     if (sprite_sheet == NULL) return SDL_APP_FAILURE;
@@ -45,14 +45,14 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     sprite_sheet = SDL_LoadPNG(Map.filename);
     if (sprite_sheet == NULL) return SDL_APP_FAILURE;
-    //SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
+    
     map_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
     SDL_DestroySurface(sprite_sheet);
     sprite_sheet = NULL;
     if (map_texture == NULL) return SDL_APP_FAILURE;
 
     Hero_animation.pos.x = 32;
-    Hero_animation.pos.y = 178;
+    Hero_animation.pos.y = 160;
     Hero_animation.facing = false;
     Hero_animation.current = STATE_IDLE;
 
@@ -93,7 +93,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     Animation *current = &Hero_animation.collection[Hero_animation.current];
 
    
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
+    SDL_SetRenderDrawColor(renderer,0, 0, 0, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
 
     /* clear the window to the draw color. */
     SDL_RenderClear(renderer);

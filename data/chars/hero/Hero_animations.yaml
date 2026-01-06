@@ -1,0 +1,153 @@
+filename: data/chars/hero/Hero.png
+animation: idle ********************************************
+length: 8
+frame: 0
+ duration: 10
+ nextframe: -1
+ nextstate: -1 
+ incxy: 0 0 
+ colbox: 52 26 24 70
+ box: 0 0 128 96 
+frame: 1 
+ box: 128
+frame: 2 
+ box: 256
+frame: 3  
+ box: 384
+frame: 4 
+ box: 512
+frame: 5
+ box: 384
+frame: 6 
+ box: 256
+frame: 7
+ box: 128 
+end;
+animation: run ********************************************
+length: 14
+frame: 0
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+ incxy: 3 0
+ box: 0 96 
+frame: 1
+ box: 128 
+frame: 2
+ box: 256 
+frame: 3
+ box: 384 
+frame: 4
+ box: 512 
+frame: 5
+ box: 640 
+frame: 6
+ box: 768 
+frame: 7
+ box: 896 
+frame: 8
+ box: 1024 
+frame: 9
+ box: 1152  
+frame: 10
+ box: 1280 
+frame: 11
+ box: 1408 
+frame: 12
+ box: 1536 
+frame: 13
+ box: 1664 
+end;
+animation: uptoduck ********************************************
+length: 2
+frame: 0
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+ incxy: 0 0
+ box: 0 192 
+frame: 1
+ nextframe: 1
+ box: 128 
+end;
+animation: ducktoup ********************************************
+length: 1
+frame: 0 
+ duration: 1
+ nextframe: -1
+ nextstate: 0
+ incxy: 0 0
+ box: 0 
+end;
+animation: turning ********************************************
+length: 1
+frame: 0
+ duration: 2
+ box: 0 288
+ duration: 2
+ nextframe: -1
+ nextstate: 0
+ incxy: 0 0
+end;
+animation: roll ********************************************
+length: 9
+frame: 0
+ incxy: 0 0
+ duration: 1
+ nextframe: -1
+ nextstate: -1
+ box: 0 192 
+frame: 1
+ box: 0 384
+frame: 2 
+ duration: 2
+ incxy: 5 0
+ box: 128 
+frame: 3
+ box:256   
+frame: 4
+ box: 384 
+frame: 5
+ box: 512
+frame: 6
+ box: 640
+frame: 7
+ incxy: 0 0
+ box: 128 192 
+frame: 8
+ nextstate: 0
+ boxx: 0 
+end;
+animation: attack1 ********************************************
+length: 7
+frame: 0
+ duration: 2
+ nextframe: -1
+ nextstate: -1
+ incxy: 0 0
+ box: 0 480
+frame: 1
+ box: 128
+frame: 2
+ duration: 3
+ box: 256
+frame: 3
+ duration: 2
+ box: 384
+frame: 4 
+ nextstate: 0
+ box: 512 
+end;
+animation: falling ********************************************
+length: 1
+frame: 0
+ box: 0 0
+ colboxx: 52
+ colboxy: 26
+ colboxw: 24
+ colboxh: 70
+ nextframe: -1
+ nextstate: 7
+ incxy: 0 8;
+ durantion: 1;
+end;

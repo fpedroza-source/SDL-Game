@@ -1,7 +1,5 @@
 #pragma once
 #include "animation.h"
-#define MAPTILES 0
-#define MAPCOORDS 1
 
 typedef struct {
     SDL_FRect coord[MAX_ANIMATION];

@@ -17,9 +17,9 @@ typedef struct {
     int duration;
   //  int flip;
     int next_frame;
-    int next_state;
-    int incx;
-    int incy;
+    int next_state;    
+    SDL_FPoint incxy;
+    SDL_FPoint posxy;
     SDL_FRect box;
     SDL_FRect colbox;
 } Frame;
