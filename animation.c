@@ -11,8 +11,10 @@ bool Animate(Animations* animations)
     Animation* anim = &animations->collection[animations->current];
 
     int incx = anim->frames[anim->frame_index].incx;
+    int incy = anim->frames[anim->frame_index].incy;
     incx -= (animations->facing*incx)*2;
     animations->pos.x += incx;
+    animations->pos.y += incy;
     if (animations->pos.x < 0) animations->pos.x = 0;
 
     if (anim->frame_time >= anim->frames[anim->frame_index].duration) {
@@ -178,22 +180,4 @@ bool HandleKeyPress(Animations* animations) {
         }
     }
     return false;
-}
-
-
-bool IntersectRect(const SDL_FRect* r1, const SDL_FRect* r2, SDL_FRect* r3)
-{
-    return false;
-   /* bool overlap = !(r2->left > r1->right
-        || r2->right < r1->left
-        || r2->top > r1->bottom
-        || r2->bottom < r1->top
-        );
-    if (r3 != NULL) {
-        r3->left = r1->left > r2->left ? r1->left : r2->left;
-        r3->right = r1->right > r2->right ? r2->right : r1->right;
-        r3->top = r1->top > r2->top ? r1->top : r2->top;
-        r3->bottom = r1->bottom > r2->bottom ? r2->bottom : r1->bottom;
-    }
-    return overlap;*/
 }

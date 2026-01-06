@@ -10,10 +10,10 @@ frame: 0
  boxy: 0;
  boxw: 128;
  boxh: 96;
- colboxx: 48
- colboxy: 24
+ colboxx: 52
+ colboxy: 26
  colboxw: 24
- colboxh: 72
+ colboxh: 70
 frame: 1 
  boxx: 128
 frame: 2 
@@ -81,7 +81,7 @@ end;
 animation: ducktoup
 length: 1
 frame: 0 
- duration: 2
+ duration: 1
  nextframe: -1
  nextstate: 0
  incx: 0
@@ -90,6 +90,7 @@ end;
 animation: turning
 length: 1
 frame: 0
+ duration: 2
  boxx: 0;
  boxy: 288;
  duration: 2
@@ -101,7 +102,7 @@ animation: roll
 length: 9
 frame: 0
  incx: 0
- duration: 2
+ duration: 1
  nextframe: -1
  nextstate: -1
  boxx: 0;
@@ -109,6 +110,7 @@ frame: 0
 frame: 1
  boxy: 384
 frame: 2 
+ duration: 2
  incx: 5
  boxx: 128 
 frame: 3
@@ -127,7 +129,6 @@ frame: 8
  boxx: 0
  nextstate: 0
 end;
-
 animation: attack1
 length: 7
 frame: 0
@@ -148,4 +149,20 @@ frame: 3
 frame: 4 
  boxx: 512
  nextstate: 0
+end;
+animation: falling
+length: 1
+frame: 0
+ boxx: 0;
+ boxy: 0;
+ boxw: 128;
+ boxh: 96;
+ colboxx: 52
+ colboxy: 26
+ colboxw: 24
+ colboxh: 70
+ nextframe: -1
+ nextstate: 7
+ incy: 8;
+ durantion: 1;
 end;

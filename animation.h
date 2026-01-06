@@ -8,6 +8,7 @@
 #define STATE_TURN 4
 #define STATE_ROLL 5
 #define STATE_ATTACK1 6
+#define STATE_FALLING 7
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -43,4 +44,3 @@ typedef struct {
 bool Animate(Animations* animations);
 bool HandleKeyPress(Animations* animatinos); 
 bool LoadAnimations(Animations *animations, const char* filename);
-bool IntersectRect(const SDL_FRect* r1, const SDL_FRect* r2, SDL_FRect* r3);

@@ -1,21 +1,15 @@
 filename: data/maps/HauntedForest/spritesheet.png
-animation: tiles
+animation: tiles********************************************
 length: 9
 frame: 0
  boxx: 32;
  boxy: 112; 
  boxw: 32
  boxh: 32
- colboxx: 0
- colboxy: 16
- colboxw: 32
- colboxh: 16
+
 frame: 1 
  boxy: 144 
- colboxx: 0
- colboxy: 0
- colboxw: 32
- colboxh: 32
+ 
 frame: 2  
  boxy: 176;
 frame: 3
@@ -45,10 +39,15 @@ frame: 8
  boxy: 238
  boxw: 352
  boxh: 238
+frame: 9
 end;
-animation: map1
-length: 7
+animation: map1 ********************************************
+length: 9
 frame: 0
+ colboxx: 0
+ colboxy: 0
+ colboxw: 0
+ colboxh: 0
  nextframe: 6
  nextstate: 3
  boxx: 0
@@ -74,23 +73,48 @@ frame: 3
  incx: 0
 end;
 frame: 4
+ *************ground*************
  nextframe: 0
- nextstate: 25
+ nextstate: 15
  boxx: 0
  boxy: 256
  incx: 32
+ colboxx: 0
+ colboxy: 274
+ colboxw: 32
+ colboxh: 16
 frame: 5
+ nextframe: 0
+ nextstate: 10
+ boxx: 480
+ boxy: 288
+ incx: 32
+ colboxx: 480
+ colboxy: 306
+ colboxw: 32
+ colboxh: 16
+frame: 6
+ colboxx: 0
+ colboxy: 0
+ colboxw: 0
+ colboxh: 0
  nextframe: 1
- nextstate: 25
+ nextstate: 15
  boxx: 0
  boxy: 288 
-frame: 6
+frame: 7
  nextframe: 2
- nextstate: 25
+ nextstate: 15
  boxx: 0
  boxy: 320 
 end;
-animation: map2
+frame: 8
+ nextframe: 1
+ nextstate: 1
+ boxx: 240
+ boxy: 276
+end;
+animation: map2 ********************************************
 length: 7
 frame: 0
  nextframe: 6
@@ -111,29 +135,39 @@ frame: 2
  boxy: 82
  incx: 0
 frame: 3
- nextframe: 0
+nextframe: 0
  nextstate: 25
+ nextframe: 0
  boxx: 0
- boxy: 256
+ boxy: 288
  incx: 32
+ colboxx: 0
+ colboxy: 306
+ colboxw: 32
+ colboxh: 16   
 frame: 4
  nextframe: 1
  nextstate: 25
  boxx: 0
- boxy: 288 
+ boxy: 320
 frame: 5
  nextframe: 2
  nextstate: 25
  boxx: 0
- boxy: 320 
+ boxy: 352 
 end;
 frame: 6
+ ***************** pilar ********************
  nextframe: 1
  nextstate: 4
  boxx: 320
  boxy: 256 
  incx: 0
  incy: -32
+ colboxx: 320
+ colboxy: 256
+ colboxw: 32
+ colboxh: 32
 end;
 animation: end
 length: 0
