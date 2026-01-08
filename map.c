@@ -1,7 +1,25 @@
 #include "map.h"
 
+void DrawObj(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* objects, const int index)
+{
+    for (int j = 0; j <MAX_ANIMATION; j++) {
+        
+        if (objects->collection[j].length == 0) break;
+        SDL_FRect* srcrect = &objects->collection[j].frames[0].box;
+        SDL_FRect dstrect = *srcrect;
+        SDL_FRect* colbox = &objects->collection[j].frames[0].colbox;
+        dstrect.x = objects->collection[j].frames[0].posxy.x - index*WINDOW_H;
+        dstrect.y = objects->collection[j].frames[0].posxy.y;
+        
+        SDL_RenderTexture(renderer, tiles, srcrect, &dstrect);
+        if (colbox->w > 0) {
+            SDL_RenderRect(renderer, colbox);
+        }            
+        
+    }
+}
 
-void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, int index)
+void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, const int index)
 {
     /* 1- next_state indicates how many times to repeat the tiles drawing*/
  
@@ -37,7 +55,7 @@ void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, in
 }
 
 
-int CheckMapCollision(SDL_Renderer *renderer, Animations* mapgrid, SDL_FRect *frame_rect, int index)
+int CheckMapCollision(SDL_Renderer *renderer, Animations* mapgrid, SDL_FRect *frame_rect, const int index)
 {
     
     Animation* cur_map = &mapgrid->collection[index];

@@ -3,9 +3,8 @@
 #include <SDL3/SDL_main.h>
 #include "animation.h"
 #include "map.h"
-Animations Hero_animation, Map, Map_bound;
-#define WINDOW_W 800
-#define WINDOW_H 600
+Animations Hero_animation, Map, Objects;
+
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window *window = NULL;
@@ -13,12 +12,23 @@ static SDL_Renderer *renderer = NULL;
 
 static SDL_Texture *sprite_texture = NULL;
 static SDL_Texture *map_texture = NULL;
+static SDL_Texture *obj_texture = NULL;
+
+bool LoadTexture(char* filename, SDL_Texture** texture)
+{
+    SDL_Surface *sprite_sheet = NULL;
+
+    sprite_sheet = SDL_LoadPNG(filename);
+    if (sprite_sheet == NULL) return false;
+    *texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
+    SDL_DestroySurface(sprite_sheet);
+    if (*texture == NULL) return false;
+    return true;
+};
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-    SDL_Surface *sprite_sheet = NULL;
-
     //SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -34,22 +44,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     
     if (!LoadAnimations(&Hero_animation, "data/chars/hero/Hero_animations.yaml")) return SDL_APP_FAILURE;
     if (!LoadAnimations(&Map, "data/maps/Cemetery/map_tiles.yaml")) return SDL_APP_FAILURE;
+    if (!LoadAnimations(&Objects, "data/maps/map_objects.yaml")) return SDL_APP_FAILURE;
    
-    sprite_sheet = SDL_LoadPNG(Hero_animation.filename);
-    if (sprite_sheet == NULL) return SDL_APP_FAILURE;
-    //SDL_SetSurfaceColorKey(sprite_sheet, true, 0xFFFFFF);
-    sprite_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
-    SDL_DestroySurface(sprite_sheet);
-    sprite_sheet = NULL;
-    if (sprite_texture == NULL) return SDL_APP_FAILURE;
-
-    sprite_sheet = SDL_LoadPNG(Map.filename);
-    if (sprite_sheet == NULL) return SDL_APP_FAILURE;
-    
-    map_texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
-    SDL_DestroySurface(sprite_sheet);
-    sprite_sheet = NULL;
-    if (map_texture == NULL) return SDL_APP_FAILURE;
+    if (!LoadTexture(Hero_animation.filename, &sprite_texture)) return SDL_APP_FAILURE;
+    if (!LoadTexture(Map.filename, &map_texture)) return SDL_APP_FAILURE;
+    if (!LoadTexture(Objects.filename, &obj_texture)) return SDL_APP_FAILURE;
 
     Hero_animation.pos.x = 32;
     Hero_animation.pos.y = 160;
@@ -58,6 +57,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     SDL_SetTextureScaleMode(sprite_texture, SDL_SCALEMODE_NEAREST);
     SDL_SetTextureScaleMode(map_texture, SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureScaleMode(obj_texture, SDL_SCALEMODE_NEAREST);
+
 
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_W, WINDOW_H, SDL_LOGICAL_PRESENTATION_STRETCH);
     
@@ -105,6 +106,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     int map_index = ((Hero_animation.pos.x) / WINDOW_W);
     if (map_index < 0) map_index = 0;
     DrawMap(renderer, map_texture, &Map, map_index);
+    DrawObj(renderer, obj_texture, &Objects, map_index);
 
 
     SDL_FRect dstrect = {fmod(Hero_animation.pos.x, WINDOW_W)-box.w/2, 
@@ -154,6 +156,6 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result)
     /* SDL will clean up the window/renderer for us. */
     if (sprite_texture != NULL) SDL_DestroyTexture(sprite_texture);
     if (map_texture != NULL) SDL_DestroyTexture(map_texture);
-
+    if (obj_texture != NULL) SDL_DestroyTexture(obj_texture);
 
 } 

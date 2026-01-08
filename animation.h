@@ -10,6 +10,9 @@
 #define STATE_ATTACK1 6
 #define STATE_FALLING 7
 
+#define WINDOW_W 800
+#define WINDOW_H 600
+
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
@@ -29,7 +32,6 @@ typedef struct {
     size_t length;   
     int frame_time;
     int frame_index;
-    /* data */
 } Animation;
 
 typedef struct {

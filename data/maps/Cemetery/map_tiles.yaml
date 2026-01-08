@@ -2,116 +2,106 @@ filename: data/maps/Cemetery/tileset_spritesheet.png
 animation: MAP 01********************************************
 length: 16
 frame: 0
- nextstate: 2
- posxy: 0 128
- incxy: 704 0
- colbox: 0 0 0 0
- box: 0 416 352 128 
+ nextstate: 3
+ posxy: 0 197
+ incxy: 384 0
+ box: 192 128 384 123
 frame: 1
  nextstate: 1
- box: 352 224 352 320
- posxy: 352 -64
+ posxy: 0 203
  incxy: 0 0
+ box: 0 128 165 117
+frame: 2
+ nextstate: 1
+ posxy: 320 150
+ incxy: 0 0
+ box: 0 288 175 170
 frame: 4
  nextstate: 13
- colbox: 0 256 64 32 
- posxy: 0 256
+ colbox: 0 320 64 32 
+ posxy: 0 320
  box: 0 32 64 32 
  incxy: 64 0
-frame: 5
- nextstate: 25
- posxy: 0 288
- incxy: 32 0
- colbox: 0 0 0 0
- box: 24 256 32 32
-frame: 6
- nextstate: 3
- incxy: 288 0
- posxy: 64 224
- box: 96 32 32 64 
-frame: 7
- nextstate: 3 
- posxy: 64 96
- box: 96 0 32 32
-frame: 8
- nextstate: 3 
- posxy: 64 128
- box: 128 0 32 32 
-frame: 9
- nextstate: 3 
- posxy: 64 160
- box: 128 0 32 32 
-frame: 10
- nextstate: 3 
- posxy: 64 192
- box: 128 0 32 32 
 frame: 11
  nextstate: 1 
- posxy: 256 192
- box: 128 32 96 64 
+ posxy: 256 272
+ box: 128 48 96 48
 frame: 12
  nextstate: 1 
- posxy: 512 192
- box: 160 32 96 64 
+ posxy: 512 272
+ box: 160 48 96 48
 frame: 13 
  nextstate: 1 
- posxy: 448 160
+ posxy: 448 224
  box: 416 0 64 96 
 frame: 14
  nextstate: 1 
- posxy: 96 128
- box: 160 128 160 128 
+ posxy: 96 256
+ box: 256 32 128 64 
 frame: 15
  nextstate: 13
  box: 0 0 64 32
- posxy: 0 224 
+ posxy: 0 288
  incxy: 64 0
 end;
 animation: MAP 02********************************************
 length: 16
-frame: 4
+frame: 0
+ nextstate: 3
+ posxy: 0 197
+ incxy: 384 0
+ box: 192 128 384 123
+frame: 3
  nextstate: 13
- colbox: 0 256 64 32 
- posxy: 0 256
+ colbox: 0 320 64 32 
+ posxy: 0 320
  box: 0 32 64 32 
  incxy: 64 0
+frame: 4 
+ nextstate: 1
+ incxy: 0 0
+ posxy: 320 192
+ colbox: 324 192 184 128
+ box: 512 0 192 128
 frame: 5
- nextstate: 25
- posxy: 0 288
- incxy: 32 0
- colbox: 0 0 0 0
- box: 24 256 32 32
-frame: 6
- nextstate: 1
- incxy: 0 0
- posxy: 320 224
- colbox: 344 224 128 32
- box: 0 256 160 32
-frame: 7
- nextstate: 5
- incxy: 0 -24
- posxy: 344 200
- colbox: 344 200 24 24
- box: 16 264 24 24
-frame: 10
- nextstate: 1
- incxy: 0 0
- posxy: 64 224
+ nextstate: 2
+ incxy:  416 0
+ posxy: 96 288
  colbox: 0 0 0 0
  box: 96 32 32 64 
-frame: 11
+frame: 6
  nextstate: 3 
  incxy: 0 -32
- posxy: 64 192
+ posxy: 96 256
  box: 128 0 32 32
-frame: 12
- nextstate: 1 
- incxy: 0 0
- posxy: 64 96
+frame: 7
+ nextstate: 2 
+ incxy: 416 0
+ posxy: 96 160
  box: 96 0 32 32
+frame: 8
+ nextstate: 3 
+ incxy: 0 -32
+ posxy: 512 256
+ box: 128 0 32 32
+frame: 9
+ nextstate: 4
+ incxy: 64 0
+ posxy: 64 128
+ box: 160 0 64 48
+frame: 10
+ nextstate: 3
+ incxy: 32 0
+ posxy: 320 128
+ box: 160 0 32 48
+frame: 11
+ nextstate: 5
+ incxy: 32 0
+ posxy: 416 128
+ box: 192 0 32 48
 frame: 15
  nextstate: 13
  box: 0 0 64 32
- posxy: 0 224 
+ posxy: 0 288
  incxy: 64 0
 end;
