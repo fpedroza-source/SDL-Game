@@ -1,7 +1,7 @@
 filename: data/maps/map_objects.png
 length: 1
 frame: 0
- posxy: 512 70
- colbox: 512 70 32 170 
- box: 0 64 32 170
+ posxy: 1056 120
+ colbox: 0 0 32 200
+ box: 64 0 32 200
 end;

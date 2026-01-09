@@ -7,13 +7,15 @@ void DrawObj(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* objects, co
         if (objects->collection[j].length == 0) break;
         SDL_FRect* srcrect = &objects->collection[j].frames[0].box;
         SDL_FRect dstrect = *srcrect;
-        SDL_FRect* colbox = &objects->collection[j].frames[0].colbox;
-        dstrect.x = objects->collection[j].frames[0].posxy.x - index*WINDOW_H;
+        SDL_FRect colbox = objects->collection[j].frames[0].colbox;
+        dstrect.x = objects->collection[j].frames[0].posxy.x - index*WINDOW_W;
         dstrect.y = objects->collection[j].frames[0].posxy.y;
+        colbox.x += dstrect.x;
+        colbox.y += dstrect.y;
         
         SDL_RenderTexture(renderer, tiles, srcrect, &dstrect);
-        if (colbox->w > 0) {
-            SDL_RenderRect(renderer, colbox);
+        if (colbox.w > 0) {
+            SDL_RenderRect(renderer, &colbox);
         }            
         
     }

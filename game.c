@@ -14,14 +14,60 @@ static SDL_Texture *sprite_texture = NULL;
 static SDL_Texture *map_texture = NULL;
 static SDL_Texture *obj_texture = NULL;
 
+void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+  
+  Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
+                                             + y * surface->pitch
+                                             + x * 4);
+  *target_pixel = pixel;
+}
+
+Uint32 get_pixel(SDL_Surface *surface, int x, int y)
+{
+  
+  Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
+                                             + y * surface->pitch
+                                             + x * 4);
+  return *target_pixel;
+}
+
+
+
 bool LoadTexture(char* filename, SDL_Texture** texture)
 {
-    SDL_Surface *sprite_sheet = NULL;
+    
+    SDL_Surface *surface = NULL;
+    
+    surface = SDL_LoadPNG(filename);
+    if (surface == NULL) return false;
+    /*for (int x =0; x < surface->w; x++)
+    {
+        for (int y=0; y < surface->h;y++)
+        {
+            Uint32 pixel = get_pixel(surface, x, y);
+            Uint32 a = pixel & 0xFF000000;
+            Uint8 r, b, g;
+            
+            b = (pixel & 0x00FF0000) >> 16;
+            g = (pixel & 0x0000FF00) >> 8;
+            r = pixel & 0x000000FF;
+            Uint32 c = (r + g + b)/3;
 
-    sprite_sheet = SDL_LoadPNG(filename);
-    if (sprite_sheet == NULL) return false;
-    *texture = SDL_CreateTextureFromSurface(renderer, sprite_sheet);  
-    SDL_DestroySurface(sprite_sheet);
+            if (c < 32) c = 0x0000;
+            else if (c < 64) c = 0x0F00;
+            else if (c < 128) c = 0xFF00;
+            else c = 0xFFFFFF;
+            
+                       pixel = a | c;
+            
+
+           set_pixel(surface, x, y, pixel);  
+                                    
+          
+    }*/
+    *texture = SDL_CreateTextureFromSurface(renderer, surface);  
+    SDL_DestroySurface(surface);    
     if (*texture == NULL) return false;
     return true;
 };
@@ -58,6 +104,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     SDL_SetTextureScaleMode(sprite_texture, SDL_SCALEMODE_NEAREST);
     SDL_SetTextureScaleMode(map_texture, SDL_SCALEMODE_NEAREST);
     SDL_SetTextureScaleMode(obj_texture, SDL_SCALEMODE_NEAREST);
+
+    //SDL_SetTextureColorMod(sprite_texture, 0, 128, 128);
+    //SDL_SetTextureColorMod(map_texture, 0, 255, 0);
 
 
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_W, WINDOW_H, SDL_LOGICAL_PRESENTATION_STRETCH);
@@ -136,7 +185,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
   
    
 
-    sprintf(debug, "frame:%d mapindex:%d posx:%f collisio:%d sate:%llu\n", current->frame_index, 
+    sprintf(debug, "frame:%d mapindex:%d posx:%f collisio:%d sate:%d\n", current->frame_index, 
         map_index, 
         Hero_animation.pos.x-box.w/2,
         collision, Hero_animation.current);

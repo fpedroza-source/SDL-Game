@@ -90,31 +90,25 @@ frame: 0
  incxy: 0 0
 end;
 animation: roll ********************************************
-length: 9
+length: 7
 frame: 0
- incxy: 0 0
- duration: 1
+ incxy: 5 0
+ duration: 2
  nextframe: -1
  nextstate: -1
- box: 0 192 
-frame: 1
  box: 0 384
-frame: 2 
- duration: 2
- incxy: 5 0
+frame: 1 
  box: 128 
+frame: 2
+ box: 256   
 frame: 3
- box:256   
-frame: 4
  box: 384 
-frame: 5
+frame: 4
  box: 512
-frame: 6
- box: 640
-frame: 7
+frame: 5
  incxy: 0 0
  box: 128 192 
-frame: 8
+frame: 6
  nextstate: 0
  boxx: 0 
 end;
@@ -149,5 +143,18 @@ frame: 0
  nextframe: -1
  nextstate: 7
  incxy: 0 8;
+ durantion: 1;
+end;
+animation: climbing ********************************************
+length: 1
+frame: 0
+ box: 0 0
+ colboxx: 52
+ colboxy: 26
+ colboxw: 24
+ colboxh: 70
+ nextframe: -1
+ nextstate: 8
+ incxy: 0 -8;
  durantion: 1;
 end;
