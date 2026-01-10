@@ -57,7 +57,7 @@ void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, co
 }
 
 
-int CheckMapCollision(SDL_Renderer *renderer, Animations* mapgrid, SDL_FRect *frame_rect, const int index)
+int CheckMapCollision(Animations* mapgrid, SDL_FRect *frame_rect, const int index)
 {
     
     Animation* cur_map = &mapgrid->collection[index];
@@ -91,6 +91,24 @@ int CheckMapCollision(SDL_Renderer *renderer, Animations* mapgrid, SDL_FRect *fr
         }
         
     }
-    return result;
-   
+    return result;   
+}
+
+int CheckObjCollision(Animations* objgrid, SDL_FRect *frame_rect, const int index) {
+
+    for (size_t j = 0; j < MAX_ANIMATION; j++) {
+        
+        if (objgrid->collection[j].length == 0) continue;
+        
+        SDL_FRect result_rect; 
+        SDL_FRect colbox = objgrid->collection[j].frames[0].colbox;
+        colbox.x +=objgrid->collection[j].frames[0].posxy.x - index*WINDOW_W;
+        colbox.y +=objgrid->collection[j].frames[0].posxy.y; 
+         
+        if (SDL_GetRectIntersectionFloat(&colbox, frame_rect, &result_rect)) {
+             return j;
+        }                                                                       
+        
+    }
+    return -1;        
 }

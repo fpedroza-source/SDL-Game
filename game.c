@@ -137,7 +137,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 {
     char debug[128];
   
-    Animate(&Hero_animation);
+   
     
     
     Animation *current = &Hero_animation.collection[Hero_animation.current];
@@ -167,8 +167,10 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     rect.y += dstrect.y;
     SDL_RenderRect(renderer, &rect); 
 
-    int collision = CheckMapCollision(renderer, &Map, &rect, map_index);
-    switch (collision) {
+    int objcol = CheckObjCollision(&Objects, &rect, map_index);
+
+    int mapcol = CheckMapCollision(&Map, &rect, map_index);
+    switch (mapcol) {
         case 1: 
             if (Hero_animation.current == STATE_FALLING) {
                 Hero_animation.current = STATE_DUCKTOUP;
@@ -176,9 +178,13 @@ SDL_AppResult SDL_AppIterate(void *appstate)
             } else Hero_animation.pos.x += Hero_animation.facing ? rect.w : -rect.w;                
             break;
         case -1:
-            Hero_animation.current = STATE_FALLING;   
+            if (Hero_animation.current != STATE_CLIMBING) {
+                Hero_animation.current = STATE_FALLING;
+            }
             break;
     }    
+    
+    Animate(&Hero_animation, objcol);
 
     SDL_RenderTextureRotated(renderer, sprite_texture, &box, 
     &dstrect, 0.0, NULL, Hero_animation.facing);
@@ -188,7 +194,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     sprintf(debug, "frame:%d mapindex:%d posx:%f collisio:%d sate:%d\n", current->frame_index, 
         map_index, 
         Hero_animation.pos.x-box.w/2,
-        collision, Hero_animation.current);
+        objcol, Hero_animation.current);
     
     SDL_RenderDebugText(renderer, 0, 0, debug);
 

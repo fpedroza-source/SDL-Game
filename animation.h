@@ -7,6 +7,10 @@
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
+enum Objects {
+    OBJ_STAIR
+};
+
 enum States {
     STATE_IDLE, 
     STATE_RUN, 
@@ -16,7 +20,8 @@ enum States {
     STATE_ROLL, 
     STATE_ATTACK1, 
     STATE_FALLING,
-    STATE_CLIMBING};
+    STATE_CLIMBING
+};
 
 
 typedef struct {
@@ -46,6 +51,6 @@ typedef struct {
 } Animations;
 
 
-bool Animate(Animations* animations);
-bool HandleKeyPress(Animations* animatinos); 
+bool Animate(Animations* animations, const int objindex);
+bool HandleKeyPress(Animations* animatinos, const enum Objects objindex); 
 bool LoadAnimations(Animations *animations, const char* filename);

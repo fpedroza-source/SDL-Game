@@ -1,9 +1,9 @@
 #include "animation.h"
 #define READATRRIBUTE(a, format, ...) if (strcmp(text, a) == 0) {fscanf(file, format, __VA_ARGS__);}
 
-bool Animate(Animations* animations)
+bool Animate(Animations* animations, const int objindex)
 {
-    if (HandleKeyPress(animations))
+    if (HandleKeyPress(animations, objindex))
     {
         animations->collection[animations->current].frame_index = 0;
         animations->collection[animations->current].frame_time = 0;
@@ -89,7 +89,7 @@ bool LoadAnimations(Animations *animations, const char* filename)
     return true;   
 }
 
-bool HandleKeyPress(Animations* animations) {
+bool HandleKeyPress(Animations* animations, const enum Objects objindex) {
     const bool* keys = NULL;
     keys = SDL_GetKeyboardState(NULL);
     if (keys !=NULL)
@@ -98,6 +98,10 @@ bool HandleKeyPress(Animations* animations) {
         {
         case STATE_IDLE:
             /* code */
+            if ((keys[SDL_SCANCODE_UP]) && (objindex == OBJ_STAIR)) {
+                animations->current = STATE_CLIMBING;
+                return true;
+            }
             if (keys[SDL_SCANCODE_LALT]) {
                animations->current = STATE_ATTACK1;
                return true;     

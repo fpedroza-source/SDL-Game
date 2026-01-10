@@ -82,26 +82,30 @@ frame: 7
 frame: 8
  nextstate: 3 
  incxy: 0 -32
- posxy: 512 256
+ posxy: 512 256 
  box: 128 0 32 32
 frame: 9
  nextstate: 4
  incxy: 64 0
  posxy: 64 128
+ colbox: 64 128 64 48 
  box: 160 0 64 48
 frame: 10
  nextstate: 3
  incxy: 32 0
  posxy: 320 128
+ colbox: 320 128 32 48 
  box: 160 0 32 48
 frame: 11
  nextstate: 5
  incxy: 32 0
  posxy: 416 128
+ colbox: 416 128 32 48 
  box: 192 0 32 48
 frame: 15
- nextstate: 13
- box: 0 0 64 32
+ nextstate: 13 
  posxy: 0 288
  incxy: 64 0
+ colbox: 0 0 0 0
+ box: 0 0 64 32
 end;
