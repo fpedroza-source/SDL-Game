@@ -98,8 +98,8 @@ bool HandleKeyPress(Animations* animations, const enum Objects objindex) {
         {
         case STATE_IDLE:
             /* code */
-            if ((keys[SDL_SCANCODE_UP]) && (objindex == OBJ_STAIR)) {
-                animations->current = STATE_CLIMBING;
+            if ((keys[SDL_SCANCODE_UP]) && (objindex == OBJ_LADDER)) {
+                animations->current = STATE_CLIMBING;                
                 return true;
             }
             if (keys[SDL_SCANCODE_LALT]) {

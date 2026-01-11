@@ -3,9 +3,10 @@
 #include <SDL3/SDL_main.h>
 #include "animation.h"
 #include "map.h"
-Animations Hero_animation, Map, Objects;
+static const int TARGET_FPS = 60;
+static Uint64 TARGET_FRAME_TICKS;
 
-
+static Animations Hero_animation, Map, Objects;
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -13,6 +14,8 @@ static SDL_Renderer *renderer = NULL;
 static SDL_Texture *sprite_texture = NULL;
 static SDL_Texture *map_texture = NULL;
 static SDL_Texture *obj_texture = NULL;
+static SDL_Texture *back_texture01 = NULL;
+static SDL_FPoint oldposxy = {0,0};
 
 void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
@@ -95,6 +98,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     if (!LoadTexture(Hero_animation.filename, &sprite_texture)) return SDL_APP_FAILURE;
     if (!LoadTexture(Map.filename, &map_texture)) return SDL_APP_FAILURE;
     if (!LoadTexture(Objects.filename, &obj_texture)) return SDL_APP_FAILURE;
+    if (!LoadTexture("data/maps/Cemetery/Background_1.png", &back_texture01)) return SDL_APP_FAILURE;
 
     Hero_animation.pos.x = 32;
     Hero_animation.pos.y = 160;
@@ -111,8 +115,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_W, WINDOW_H, SDL_LOGICAL_PRESENTATION_STRETCH);
     
-    SDL_SetRenderVSync(renderer, 1);
-    return SDL_APP_CONTINUE;  /* carry on with the program! */
+   // SDL_SetRenderVSync(renderer, 1);
+   TARGET_FRAME_TICKS = SDL_GetPerformanceFrequency() / TARGET_FPS; 
+
+   return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
 /* This function runs when a new event (mouse input, keypresses, etc) occurs. */
@@ -135,13 +141,14 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
-    char debug[128];
-  
-   
-    
-    
+    Uint64 framestart = SDL_GetPerformanceCounter();
+        
     Animation *current = &Hero_animation.collection[Hero_animation.current];
-
+    SDL_FRect srcrect = current->frames[current->frame_index].box;
+    SDL_FRect dstrect = srcrect;
+    SDL_FRect rect = current->frames[current->frame_index].colbox;
+    char debug[128];
+    
    
     SDL_SetRenderDrawColor(renderer,0, 0, 0, SDL_ALPHA_OPAQUE);  /* new color, full alpha. */
 
@@ -149,51 +156,56 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);  /* white, full alpha */
-    SDL_FRect box = current->frames[current->frame_index].box;
     
     //int flip = current->frames[current->frame_index].flip;
-    int map_index = ((Hero_animation.pos.x) / WINDOW_W);
-    if (map_index < 0) map_index = 0;
-    DrawMap(renderer, map_texture, &Map, map_index);
-    DrawObj(renderer, obj_texture, &Objects, map_index);
-
-
-    SDL_FRect dstrect = {fmod(Hero_animation.pos.x, WINDOW_W)-box.w/2, 
-        Hero_animation.pos.y, box.w, box.h};
-   
-    SDL_FRect rect = current->frames[current->frame_index].colbox;
-  
+    float deltax = Hero_animation.pos.x -  (WINDOW_W /2);
+    if (deltax <0) {
+        deltax = 0;
+    }
+    
+    dstrect.x = Hero_animation.pos.x - deltax;
+    dstrect.y = Hero_animation.pos.y;
     rect.x += dstrect.x;
     rect.y += dstrect.y;
+    SDL_FRect screen = {0, 0, 800, 416};
+
+    SDL_RenderTexture(renderer, back_texture01, NULL, &screen);
+
+    DrawMap(renderer, map_texture, &Map, deltax);
+    DrawObj(renderer, obj_texture, &Objects, deltax);
+ 
     SDL_RenderRect(renderer, &rect); 
 
-    int objcol = CheckObjCollision(&Objects, &rect, map_index);
+   enum Objects objcol = CheckObjCollision(&Objects, &Hero_animation, &rect);  
 
-    int mapcol = CheckMapCollision(&Map, &rect, map_index);
-    switch (mapcol) {
+   if (Hero_animation.current != STATE_CLIMBING) {
+        int mapcol = CheckMapCollision(&Map, &Hero_animation, &rect);
+        switch (mapcol) {
         case 1: 
             if (Hero_animation.current == STATE_FALLING) {
                 Hero_animation.current = STATE_DUCKTOUP;
                 Hero_animation.pos.y -= rect.h;
-            } else Hero_animation.pos.x += Hero_animation.facing ? rect.w : -rect.w;                
+            } else Hero_animation.pos = oldposxy;                
             break;
         case -1:
             if (Hero_animation.current != STATE_CLIMBING) {
                 Hero_animation.current = STATE_FALLING;
             }
-            break;
-    }    
+            
+        }
+    } else Hero_animation.pos.x -= rect.w;
     
+    oldposxy = Hero_animation.pos;
     Animate(&Hero_animation, objcol);
+    
 
-    SDL_RenderTextureRotated(renderer, sprite_texture, &box, 
+    SDL_RenderTextureRotated(renderer, sprite_texture, &srcrect, 
     &dstrect, 0.0, NULL, Hero_animation.facing);
-  
-   
+    
 
-    sprintf(debug, "frame:%d mapindex:%d posx:%f collisio:%d sate:%d\n", current->frame_index, 
-        map_index, 
-        Hero_animation.pos.x-box.w/2,
+    sprintf(debug, "frame:%d deltax:%f posx:%f collisio:%d sate:%d\n", current->frame_index, 
+        deltax, 
+        Hero_animation.pos.x,
         objcol, Hero_animation.current);
     
     SDL_RenderDebugText(renderer, 0, 0, debug);
@@ -201,7 +213,11 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     
     // Update the screen with the current render
     SDL_RenderPresent(renderer);
-
+    Uint64 currentTime = 0;
+    do {
+        currentTime = SDL_GetPerformanceCounter();
+    } while (currentTime < framestart + TARGET_FRAME_TICKS);        
+    
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -212,5 +228,6 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result)
     if (sprite_texture != NULL) SDL_DestroyTexture(sprite_texture);
     if (map_texture != NULL) SDL_DestroyTexture(map_texture);
     if (obj_texture != NULL) SDL_DestroyTexture(obj_texture);
+    if (back_texture01 != NULL) SDL_DestroyTexture(back_texture01);
 
 } 

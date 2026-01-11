@@ -139,14 +139,14 @@ frame: 0
  nextframe: -1
  nextstate: 7
  incxy: 0 8;
- durantion: 1;
+ duration: 1;
 end;
 animation: climbing ********************************************
 length: 11
 frame: 0
  nextframe: -1
  nextstate: -1 
- incxy: 0 -2;
+ incxy: 0 -4;
  duration: 6;
  box: 0 672
 frame: 1

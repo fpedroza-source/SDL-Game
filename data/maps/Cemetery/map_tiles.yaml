@@ -5,12 +5,13 @@ frame: 0
  nextstate: 3
  posxy: 0 197
  incxy: 384 0
+ colbox: 0 0 0 0
  box: 192 128 384 123
 frame: 1
  nextstate: 1
  posxy: 0 203
  incxy: 0 0
- box: 0 128 165 117
+ box: 0 128 165 117 
 frame: 2
  nextstate: 1
  posxy: 320 150
@@ -18,13 +19,12 @@ frame: 2
  box: 0 288 175 170
 frame: 4
  nextstate: 13
- colbox: 0 320 64 32 
- posxy: 0 320
- box: 0 32 64 32 
  incxy: 64 0
+ posxy: 0 320
+ box: 0 32 64 32  
 frame: 11
  nextstate: 1 
- posxy: 256 272
+ posxy: 256 272 
  box: 128 48 96 48
 frame: 12
  nextstate: 1 
@@ -39,73 +39,92 @@ frame: 14
  posxy: 96 256
  box: 256 32 128 64 
 frame: 15
- nextstate: 13
- box: 0 0 64 32
+ nextstate: 13 
  posxy: 0 288
  incxy: 64 0
+ colbox: 0 320 800 32 
+ box: 0 0 64 32
 end;
 animation: MAP 02********************************************
 length: 16
 frame: 0
  nextstate: 3
- posxy: 0 197
+ posxy: 800 197
  incxy: 384 0
+ colbox: 0 0 0 0 
  box: 192 128 384 123
 frame: 3
- nextstate: 13
- colbox: 0 320 64 32 
- posxy: 0 320
+ nextstate: 13 
+ posxy: 800 320
  box: 0 32 64 32 
  incxy: 64 0
 frame: 4 
  nextstate: 1
  incxy: 0 0
- posxy: 320 192
- colbox: 324 192 184 128
+ posxy: 1120 192
+ colbox: 1124 192 184 128
  box: 512 0 192 128
 frame: 5
  nextstate: 2
  incxy:  416 0
- posxy: 96 288
+ posxy: 896 288
  colbox: 0 0 0 0
  box: 96 32 32 64 
 frame: 6
  nextstate: 3 
  incxy: 0 -32
- posxy: 96 256
+ posxy: 896 256
  box: 128 0 32 32
 frame: 7
  nextstate: 2 
  incxy: 416 0
- posxy: 96 160
+ posxy: 896 160
  box: 96 0 32 32
 frame: 8
  nextstate: 3 
  incxy: 0 -32
- posxy: 512 256 
+ posxy: 1312 256 
  box: 128 0 32 32
 frame: 9
  nextstate: 4
  incxy: 64 0
- posxy: 64 128
- colbox: 64 128 64 48 
+ posxy: 864 128
  box: 160 0 64 48
 frame: 10
  nextstate: 3
  incxy: 32 0
- posxy: 320 128
- colbox: 320 128 32 48 
+ posxy: 1120 128
  box: 160 0 32 48
 frame: 11
  nextstate: 5
  incxy: 32 0
- posxy: 416 128
- colbox: 416 128 32 48 
+ posxy: 1216 128 
+ colbox: 864 128 512 32
  box: 192 0 32 48
 frame: 15
  nextstate: 13 
- posxy: 0 288
+ posxy: 800 288
  incxy: 64 0
- colbox: 0 0 0 0
+ colbox: 800 320 800 32 
+ box: 0 0 64 32
+end;
+animation: MAP 03********************************************
+length: 16
+frame: 0
+ nextstate: 3
+ posxy: 1600 197
+ incxy: 384 0
+ colbox: 0 0 0 0 
+ box: 192 128 384 123
+frame: 3
+ nextstate: 13 
+ posxy: 1600 320
+ box: 0 32 64 32 
+ incxy: 64 0
+frame: 15
+ nextstate: 13 
+ posxy: 1600 288
+ incxy: 64 0
+ colbox: 1600 320 800 32 
  box: 0 0 64 32
 end;

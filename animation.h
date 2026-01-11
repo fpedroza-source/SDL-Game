@@ -8,7 +8,8 @@
 #include <stdio.h>
 
 enum Objects {
-    OBJ_STAIR
+    OBJ_NONE = -1,
+    OBJ_LADDER
 };
 
 enum States {

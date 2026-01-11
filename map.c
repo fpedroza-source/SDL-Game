@@ -1,18 +1,17 @@
 #include "map.h"
 
-void DrawObj(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* objects, const int index)
+void DrawObj(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* objects, const float map_pos)
 {
     for (int j = 0; j <MAX_ANIMATION; j++) {
         
-        if (objects->collection[j].length == 0) break;
+        if (objects->collection[j].length == 0) continue;
         SDL_FRect* srcrect = &objects->collection[j].frames[0].box;
         SDL_FRect dstrect = *srcrect;
         SDL_FRect colbox = objects->collection[j].frames[0].colbox;
-        dstrect.x = objects->collection[j].frames[0].posxy.x - index*WINDOW_W;
+        dstrect.x = objects->collection[j].frames[0].posxy.x - map_pos;
         dstrect.y = objects->collection[j].frames[0].posxy.y;
-        colbox.x += dstrect.x;
-        colbox.y += dstrect.y;
-        
+        colbox.x -= map_pos;
+                
         SDL_RenderTexture(renderer, tiles, srcrect, &dstrect);
         if (colbox.w > 0) {
             SDL_RenderRect(renderer, &colbox);
@@ -21,35 +20,37 @@ void DrawObj(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* objects, co
     }
 }
 
-void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, const int index)
+void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, const float map_pos)
 {
-    /* 1- next_state indicates how many times to repeat the tiles drawing*/
- 
-    Animation* cur_map = &mapgrid->collection[index];
+
+    for (int i = 0; i < MAX_ANIMATION; i++)
+    {
+
+        Animation* cur_map = &mapgrid->collection[i];
+        size_t length = cur_map->length;
+        if (length <=0) continue;
     
-    size_t length = cur_map->length;
-    if (length <=0) return;
-    
-    for (int j = 0; j < length; j++) {
-        
-        int repeat = cur_map->frames[j].next_state;
-        SDL_FRect* srcrect = &cur_map->frames[j].box;
-        SDL_FRect dstrect = cur_map->frames[j].box;
-        SDL_FRect colbox = cur_map->frames[j].colbox;
-        dstrect.x = cur_map->frames[j].posxy.x;
-        dstrect.y = cur_map->frames[j].posxy.y;
-        
-        for (int k=0; k < repeat; k++) {        
-            SDL_RenderTexture(renderer, tiles, srcrect, &dstrect);
+        for (int j = 0; j < length; j++) {
+            
+            /* 1- next_state indicates how many times to repeat the tiles drawing*/      
+            int repeat = cur_map->frames[j].next_state;
+            SDL_FRect* srcrect = &cur_map->frames[j].box;
+            SDL_FRect dstrect = cur_map->frames[j].box;
+            SDL_FRect colbox = cur_map->frames[j].colbox;
+            dstrect.x = cur_map->frames[j].posxy.x - map_pos;
+            
+            dstrect.y = cur_map->frames[j].posxy.y;
+            colbox.x -= map_pos;
+
             if (colbox.w > 0) {
                 SDL_RenderRect(renderer, &colbox);
-                colbox.x += cur_map->frames[j].incxy.x;
-                colbox.y += cur_map->frames[j].incxy.y;           
             }
-            dstrect.x += cur_map->frames[j].incxy.x;
-            dstrect.y += cur_map->frames[j].incxy.y;           
-            
-        
+
+            for (int k=0; k < repeat; k++) {        
+                SDL_RenderTexture(renderer, tiles, srcrect, &dstrect);                
+                dstrect.x += cur_map->frames[j].incxy.x;
+                dstrect.y += cur_map->frames[j].incxy.y;                               
+            }
         }
         
     }
@@ -57,36 +58,36 @@ void DrawMap(SDL_Renderer *renderer, SDL_Texture *tiles, Animations* mapgrid, co
 }
 
 
-int CheckMapCollision(Animations* mapgrid, SDL_FRect *frame_rect, const int index)
+int CheckMapCollision(Animations* mapgrid, Animations* hero, SDL_FRect* result_rect)
 {
     
-    Animation* cur_map = &mapgrid->collection[index];
-
-    size_t length = mapgrid->collection[index].length;
+    Animation* current = &hero->collection[hero->current];
+    SDL_FRect charbox = current->frames[current->frame_index].colbox;
     int result = -1;
-    if (length <=0) return 0;
-    for (size_t j = 0; j < length; j++) {
-        
-        int repeat = cur_map->frames[j].next_state;
-        SDL_FRect colbox = cur_map->frames[j].colbox;
-        
-        if (colbox.w == 0) continue;
-        
-        for (int k=0; k < repeat; k++)
-        {
-            SDL_FRect result_rect; 
-         
-            if (SDL_GetRectIntersectionFloat(&colbox, frame_rect, &result_rect)) {
-                if (frame_rect->y + frame_rect->h != colbox.y) {
-                    *frame_rect = result_rect;
-                    return 1;
-                }
-                result = 0;
-             } //else return -1;
 
-                
-            colbox.x += cur_map->frames[j].incxy.x;
-            colbox.y += cur_map->frames[j].incxy.y;            
+    charbox.x += hero->pos.x;
+    charbox.y += hero->pos.y;
+
+    
+    for (int i = 0; i < MAX_ANIMATION; i++)
+    {
+
+        Animation* cur_map = &mapgrid->collection[i];
+        size_t length = cur_map->length;
+        if (length <=0) continue;
+    
+    
+        for (size_t j = 0; j < length; j++) {
+        
+            SDL_FRect colbox = cur_map->frames[j].colbox;
+            if (colbox.w == 0) continue;                    
+         
+            if (SDL_GetRectIntersectionFloat(&colbox, &charbox, result_rect)) {
+                if (charbox.y + charbox.h != colbox.y) {
+                    return 1;                    
+                } //else return -1;
+                result = 0;      
+            }         
         
         }
         
@@ -94,21 +95,25 @@ int CheckMapCollision(Animations* mapgrid, SDL_FRect *frame_rect, const int inde
     return result;   
 }
 
-int CheckObjCollision(Animations* objgrid, SDL_FRect *frame_rect, const int index) {
+enum Objects CheckObjCollision(Animations* objgrid, Animations* hero, SDL_FRect* result_rect) {
+
+    Animation* current = &hero->collection[hero->current];
+    SDL_FRect charbox = current->frames[current->frame_index].colbox;
+    
+    charbox.x += hero->pos.x;
+    charbox.y += hero->pos.y;
+
 
     for (size_t j = 0; j < MAX_ANIMATION; j++) {
         
         if (objgrid->collection[j].length == 0) continue;
         
-        SDL_FRect result_rect; 
-        SDL_FRect colbox = objgrid->collection[j].frames[0].colbox;
-        colbox.x +=objgrid->collection[j].frames[0].posxy.x - index*WINDOW_W;
-        colbox.y +=objgrid->collection[j].frames[0].posxy.y; 
-         
-        if (SDL_GetRectIntersectionFloat(&colbox, frame_rect, &result_rect)) {
+        SDL_FRect objbox = objgrid->collection[j].frames[0].colbox;
+                 
+        if (SDL_GetRectIntersectionFloat(&charbox, &objbox, result_rect)) {             
              return j;
         }                                                                       
         
     }
-    return -1;        
+    return OBJ_NONE;        
 }
